@@ -191,141 +191,108 @@ section {
 .btn-outline:hover { background: #f5ede0; }
 
 /* =========================
-   PROFILE PHOTO + GEAR (FINAL - NO UPLOAD)
+   PROFILE PHOTO - BULAT + SPIN BACKGROUND
 ========================= */
 .profile-wrapper {
   position: relative;
-  max-width: 360px;
+  max-width: 320px;
   margin: auto;
 }
 
+/* Spin background (logo.png berputar di belakang foto) */
+.spin-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 110%;
+  height: 110%;
+  transform: translate(-50%, -50%);
+  background-image: url('/p/logo.png');  /* Ganti dengan path logo Anda */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: spinSlow 8s linear infinite;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Profile photo - BULAT sempurna, tidak merusak gambar */
 .profile-photo {
   position: relative;
-  aspect-ratio: 4/5;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border-radius: 50%;
   overflow: hidden;
-  border-radius: 32px;
   background: #ddd3c3;
-  border: 1px solid rgba(255,255,255,.28);
-  box-shadow: 0 12px 28px rgba(0,0,0,.08), 0 28px 60px rgba(0,0,0,.10);
-  transition: transform 0.45s cubic-bezier(.2,.8,.2,1), box-shadow 0.4s ease;
-}
-
-/* dark cinematic fade */
-.profile-photo::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+  border: 2px solid rgba(255,255,255,0.4);
+  box-shadow: 0 12px 28px rgba(0,0,0,.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(to top, rgba(18,24,21,.32) 0%, rgba(18,24,21,.08) 34%, transparent 68%);
-}
-
-/* soft light streak */
-.profile-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.16) 48%, transparent 74%);
-  mix-blend-mode: screen;
-  opacity: .65;
 }
 
 .profile-photo:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 20px 44px rgba(0,0,0,.12), 0 40px 90px rgba(0,0,0,.16);
+  transform: scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
 .profile-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;  /* gambar memenuhi lingkaran tanpa distorsi, sedikit crop natural */
   display: block;
-  transition: transform 1s ease, filter 0.4s ease;
+  border-radius: inherit;
 }
 
-.profile-photo:hover .profile-img {
-  transform: scale(1.045);
-  filter: contrast(1.04) saturate(1.02);
-}
-
-/* GEAR / KAMON - COOLNESS for desktop+mobile */
+/* Gear icon tetap di sudut kanan atas (diatas foto) */
 .gear-icon {
   position: absolute;
-  top: 18px;
-  right: 18px;
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
+  top: 12px;
+  right: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.25);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.3);
   z-index: 10;
-  animation: floatSoft 4.5s ease-in-out infinite, spinSlow 12s linear infinite;
+  animation: floatSoft 4.5s ease-in-out infinite;
+  pointer-events: none;
 }
-
-/* inner ring */
-.gear-icon::before {
-  content: "";
-  position: absolute;
-  inset: 8px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
 .gear-icon svg {
-  width: 32px;
-  height: 32px;
-  stroke: var(--green);
-  stroke-width: 1.6;
+  width: 28px;
+  height: 28px;
+  stroke: white;
+  stroke-width: 1.5;
   opacity: 0.9;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
-@keyframes floatSoft {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-5px) rotate(3deg); }
-}
-
+/* Animasi */
 @keyframes spinSlow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
-/* =========================
-   MOBILE ADAPTATION GEAR
-========================= */
+/* Responsive: ukuran gear lebih kecil di mobile */
 @media (max-width: 640px) {
-  .profile-photo { border-radius: 24px; }
-  .gear-icon {
-    top: 12px;
-    right: 12px;
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    backdrop-filter: blur(8px);
-  }
-  .gear-icon::before { inset: 6px; border-radius: 10px; }
-  .gear-icon svg { width: 26px; height: 26px; }
-}
-
-@media (max-width: 480px) {
-  .gear-icon {
-    top: 10px;
-    right: 10px;
-    width: 46px;
-    height: 46px;
-  }
+  .gear-icon { width: 40px; height: 40px; top: 8px; right: 8px; }
   .gear-icon svg { width: 22px; height: 22px; }
+  .profile-wrapper { max-width: 260px; }
+}
+@media (max-width: 480px) {
+  .gear-icon { width: 36px; height: 36px; }
+  .gear-icon svg { width: 20px; height: 20px; }
 }
 
 /* =========================
-   CARDS
+   CARDS (tidak berubah)
 ========================= */
 .about-grid,
 .skills-grid,
@@ -504,9 +471,9 @@ footer {
 </head>
 <body>
 
-<!-- BACKGROUND CHANGE SYSTEM -->
+<!-- BACKGROUND CHANGE SYSTEM (gambar pertama pakai Unsplash valid) -->
 <div class="bg-container">
-  <img class="bg-img active" id="bgHero" src="/p/prof.jpeg" alt="Profesor Khairul Amri - background hero">
+  <img class="bg-img active" id="bgHero" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format" alt="Japan aesthetic background">
   <img class="bg-img" id="bgAbout" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format" alt="Professional atmosphere background">
   <img class="bg-img" id="bgExp" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format" alt="Collaborative team background">
 </div>
@@ -526,7 +493,7 @@ footer {
   </nav>
 </div>
 
-<!-- HERO + PROFILE + GEAR -->
+<!-- HERO + PROFILE + GEAR + SPIN BACKGROUND -->
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-left reveal">
@@ -540,15 +507,18 @@ footer {
     </div>
     <div class="hero-right reveal">
       <div class="profile-wrapper">
-        <!-- GEAR - cool floating + spinning emblem -->
+        <!-- Spin background logo berputar di belakang foto -->
+        <div class="spin-bg"></div>
+        <!-- Gear icon di sudut kanan atas -->
         <div class="gear-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <circle cx="12" cy="12" r="3"></circle>
             <path d="M12 1v3m0 16v3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M1 12h3m16 0h3M4.22 19.78l2.12-2.12m11.32-11.32l2.12-2.12"></path>
           </svg>
         </div>
+        <!-- Profile photo bulat -->
         <div class="profile-photo">
-          <img class="profile-img" id="profileImg" src="/p/logo.jpg" alt="Profile photo of Amri Ismail - Berkah Perdana" style="width: 100%; height: 100%; object-fit: cover;">
+          <img class="profile-img" src="/p/logo.jpg" alt="Profile photo of Amri Ismail - Berkah Perdana">
         </div>
       </div>
     </div>
@@ -570,7 +540,12 @@ footer {
 <!-- CONTACT -->
 <section id="contact"><div class="container"><div class="section-head reveal"><div class="section-sub">Contact</div><h2 class="section-title">Connect</h2></div><div class="social-grid"><a href="#" class="social-card reveal"><h3>GitHub</h3><p>Open source</p></a><a href="#" class="social-card reveal"><h3>Instagram</h3><p>Updates</p></a><a href="#" class="social-card reveal"><h3>LinkedIn</h3><p>Network</p></a><a href="#" class="social-card reveal"><h3>Twitter</h3><p>Thoughts</p></a><a href="#" class="social-card reveal"><h3>WhatsApp</h3><p>Direct chat</p></a></div></div></section>
 
-<footer><div class="container footer-grid"><div class="footer-brand"><h3>Berkah Perdana • Amri Dev</h3><p>Clean frontend architecture</p></div><div class="footer-links"><a href="/t/index.html">Team</a><a href="/d/index.html">Owner</a></div></div></footer>
+<footer>
+  <div class="container footer-grid">
+    <div class="footer-brand"><h3>Berkah Perdana • Amri Dev</h3><p>Clean frontend architecture</p></div>
+    <div class="footer-links"><a href="/t/index.html">Team</a><a href="/d/index.html">Owner</a></div>
+  </div>
+</footer>
 
 <script>
 // REVEAL ON SCROLL
