@@ -2,43 +2,54 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>Owner Dashboard · Berkah Perdana</title>
   <style>
-    /* SAMA dengan kasir, ditambah style untuk modal edit dan tombol khusus owner */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #F0EBE1; font-family: system-ui, sans-serif; padding: 20px; color: #2C2C2C; }
+    body { background: #F0EBE1; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; padding: 16px; color: #2C2C2C; }
     .container { max-width: 1400px; margin: 0 auto; }
-    .header { background: #2C2C2C; color: #FDFBF7; padding: 16px 24px; border-radius: 32px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    .user-info { background: #4A4A4A; padding: 6px 16px; border-radius: 40px; }
-    .logout-btn { background: #9E9A8C; border: none; padding: 6px 16px; border-radius: 40px; cursor: pointer; color: white; }
-    .counter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 16px; margin-bottom: 24px; }
-    .card { background: #FDFBF7; border-radius: 28px; padding: 16px; text-align: center; border: 1px solid #E8D9C5; }
-    .card .num { font-size: 32px; font-weight: 800; }
+    .header { background: #2C2C2C; color: #FDFBF7; padding: 14px 20px; border-radius: 32px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .user-info { background: #4A4A4A; padding: 5px 14px; border-radius: 40px; font-size: 13px; }
+    .logout-btn { background: #9E9A8C; border: none; padding: 6px 14px; border-radius: 40px; color: white; cursor: pointer; }
+    .counter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .card { background: #FDFBF7; border-radius: 24px; padding: 14px; text-align: center; border: 1px solid #E8D9C5; }
+    .card .num { font-size: 28px; font-weight: 800; }
     .green { color: #4A7C59; }
     .yellow { color: #D4A373; }
     .red { color: #C17A5D; }
     .pink { color: #C17A5D; opacity: 0.8; }
-    .filter-bar { background: #FDFBF7; border-radius: 28px; padding: 16px 20px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; border: 1px solid #E8D9C5; }
-    .filter-group { display: flex; gap: 8px; align-items: center; background: #F0EBE1; padding: 5px 12px; border-radius: 40px; }
+    .filter-bar { background: #FDFBF7; border-radius: 28px; padding: 12px 16px; margin-bottom: 20px; display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 10px; align-items: center; border: 1px solid #E8D9C5; -webkit-overflow-scrolling: touch; }
+    .filter-group { display: flex; gap: 6px; align-items: center; background: #F0EBE1; padding: 5px 12px; border-radius: 40px; flex-shrink: 0; }
     .filter-group select, .filter-group input { background: transparent; border: none; padding: 8px 0; font-size: 13px; outline: none; }
-    .btn-filter { background: #E8D9C5; border: none; padding: 6px 14px; border-radius: 30px; cursor: pointer; }
-    .btn-danger { background: #C17A5D; color: white; border: none; padding: 6px 14px; border-radius: 30px; cursor: pointer; }
-    .search-box input { background: #FDFBF7; border: 1px solid #E8D9C5; padding: 8px 16px; border-radius: 40px; width: 220px; }
-    .table-wrapper { background: #FDFBF7; border-radius: 24px; border: 1px solid #E8D9C5; overflow-x: auto; margin-bottom: 20px; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1000px; }
-    th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid #F0EBE1; }
+    .btn-filter { background: #E8D9C5; border: none; padding: 6px 12px; border-radius: 30px; cursor: pointer; white-space: nowrap; }
+    .btn-danger { background: #C17A5D; color: white; border: none; padding: 6px 12px; border-radius: 30px; cursor: pointer; }
+    .search-box input { background: #FDFBF7; border: 1px solid #E8D9C5; padding: 8px 12px; border-radius: 40px; width: 160px; }
+    .table-wrapper { background: transparent; margin-bottom: 20px; }
+    @media (max-width: 768px) {
+      .table-wrapper table, .table-wrapper thead, .table-wrapper tbody, .table-wrapper tr, .table-wrapper td { display: block; }
+      .table-wrapper thead { display: none; }
+      .table-wrapper tr { background: #FDFBF7; border-radius: 24px; margin-bottom: 16px; padding: 12px; border: 1px solid #E8D9C5; }
+      .table-wrapper td { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 0; border-bottom: none; font-size: 13px; }
+      .table-wrapper td::before { content: attr(data-label); font-weight: 600; color: #4A7C59; width: 40%; flex-shrink: 0; }
+      .table-wrapper td:last-child::before { display: none; }
+      .table-wrapper td:last-child { justify-content: flex-start; flex-wrap: wrap; gap: 8px; }
+      button { padding: 10px 16px; font-size: 13px; min-width: 80px; }
+      .filter-bar { flex-wrap: nowrap; overflow-x: auto; }
+      .counter-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    table { width: 100%; border-collapse: collapse; background: transparent; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #E8D9C5; }
     th { background: #F9F5EE; }
     .status-badge { display: inline-block; padding: 4px 12px; border-radius: 40px; font-size: 11px; font-weight: 600; }
     .status-pending { background: #E8D9C5; color: #2C2C2C; }
     .status-paid { background: #4A7C59; color: white; }
     .status-cancelled { background: #C17A5D; color: white; }
     .status-deleted { background: #9E9A8C; color: white; }
-    button { background: none; border: none; cursor: pointer; padding: 5px 10px; border-radius: 30px; font-size: 11px; font-weight: 500; margin: 2px; }
+    button { background: none; border: none; cursor: pointer; padding: 5px 12px; border-radius: 30px; font-size: 12px; font-weight: 500; transition: 0.2s; }
     .btn-restore { background: #D4A373; color: white; }
     .btn-edit { background: #4A7C59; color: white; }
     .btn-delete-permanent { background: #C17A5D; color: white; }
-    .pagination { display: flex; justify-content: center; gap: 12px; margin-top: 16px; margin-bottom: 24px; }
+    .pagination { display: flex; justify-content: center; gap: 12px; margin: 16px 0; }
     .pagination button { background: #E8D9C5; padding: 8px 16px; }
     .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.2s; }
     .modal.show { visibility: visible; opacity: 1; }
@@ -51,228 +62,61 @@
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <h2>👑 Owner Dashboard · Berkah Perdana</h2>
-    <div><span class="user-info" id="userEmailDisplay">Owner</span><button id="logoutBtn" class="logout-btn">Keluar</button></div>
-  </div>
-
+  <div class="header"><h2>👑 Owner Dashboard</h2><div><span class="user-info" id="userEmailDisplay">Owner</span><button id="logoutBtn" class="logout-btn">Keluar</button></div></div>
   <div class="counter-grid">
     <div class="card"><div class="num green" id="counterPaid">0</div><div class="label">✅ Lunas (Hari Ini)</div></div>
     <div class="card"><div class="num yellow" id="counterPending">0</div><div class="label">⏳ Pending (Hari Ini)</div></div>
     <div class="card"><div class="num red" id="counterCancelled">0</div><div class="label">❌ Batal (Hari Ini)</div></div>
     <div class="card"><div class="num pink" id="counterDeleted">0</div><div class="label">🗑️ Delete (Hari Ini)</div></div>
   </div>
-
   <div class="filter-bar">
     <div class="filter-group"><span>Status:</span><select id="filterStatus"><option value="all">Semua</option><option value="pending">Pending</option><option value="paid">Lunas</option><option value="cancelled">Batal</option><option value="deleted">Delete</option></select></div>
-    <div class="filter-group"><span>Bulan:</span><select id="filterMonth"><option value="all">Semua</option><option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option><option value="3">April</option><option value="4">Mei</option><option value="5">Juni</option><option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option><option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option></select></div>
+    <div class="filter-group"><span>Bulan:</span><select id="filterMonth"><option value="all">Semua</option><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">Mei</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Agu</option><option value="8">Sep</option><option value="9">Okt</option><option value="10">Nov</option><option value="11">Des</option></select></div>
     <div class="filter-group"><span>Tahun:</span><select id="filterYear"><option value="2026">2026</option><option value="2027">2027</option></select></div>
-    <div><button id="todayBtn" class="btn-filter">Hari Ini</button><button id="yesterdayBtn" class="btn-filter">Kemarin</button></div>
+    <button id="todayBtn" class="btn-filter">Hari Ini</button><button id="yesterdayBtn" class="btn-filter">Kemarin</button>
     <div class="search-box"><input type="text" id="searchInput" placeholder="Cari..."></div>
-    <div><button id="downloadAllBtn" class="btn-filter">📥 Download Semua TXT</button></div>
-    <div><button id="resetCounterBtn" class="btn-danger">⚠️ RESET COUNTER</button></div>
+    <button id="downloadAllBtn" class="btn-filter">📥 Download Semua TXT</button>
+    <button id="resetCounterBtn" class="btn-danger">⚠️ Reset Counter</button>
   </div>
-
-  <div class="table-wrapper">
-    <table id="ordersTable">
-      <thead><tr><th>Invoice ID</th><th>Customer</th><th>Total</th><th>Metode</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
-      <tbody id="ordersBody"><tr><td colspan="7">Memuat...</td></tr></tbody>
-    </table>
-  </div>
+  <div class="table-wrapper"><table id="ordersTable"><thead><tr><th>Invoice ID</th><th>Customer</th><th>Total</th><th>Metode</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead><tbody id="ordersBody"><tr><td colspan="7">Memuat...</td></tr></tbody></table></div>
   <div class="pagination"><button id="prevPageBtn">◀ Prev</button><span id="pageInfo">Halaman 1 dari 1</span><button id="nextPageBtn">Next ▶</button></div>
-  <footer>📌 Owner dapat restore invoice deleted, edit, hapus permanen, dan reset counter harian.</footer>
+  <footer>📌 Owner dapat restore, edit, hapus permanen, reset counter harian (wajib download riwayat).</footer>
 </div>
-
 <div id="editModal" class="modal"><div class="modal-content"><h3>Edit Invoice</h3><input type="text" id="editName" placeholder="Nama Customer"><input type="number" id="editTotal" placeholder="Total"><input type="text" id="editMethod" placeholder="Metode Bayar"><textarea id="editNote" placeholder="Catatan"></textarea><button id="saveEditBtn">Simpan</button><button id="closeModalBtn">Batal</button></div></div>
 <div id="toast" class="toast hide"></div>
-
 <script>
   const ACCESS_KEY = '$2a$10$r4eYFvDwMt8h6E.5A0XZ4.RPdBz7kMen0j.8ntiOWVtsh/8GmPbyi';
   const BIN_ID = '6a0a995c250b1311c367be91';
-
-  let orders = [];
-  let filteredOrders = [];
-  let currentPage = 1;
-  const rowsPerPage = 50;
-  let syncInterval = null;
+  let orders = [], filteredOrders = [], currentPage = 1, rowsPerPage = 50, syncInterval = null;
   let currentFilter = { status: 'all', month: 'all', year: '2026', search: '' };
   let currentEditIdx = null;
-
-  function formatRupiah(angka) { return 'Rp ' + (angka||0).toLocaleString('id-ID'); }
-  function escapeHtml(str) { return String(str||'').replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
-  function showToast(msg, isErr=false) { const t=document.getElementById('toast'); t.textContent=msg; t.style.background=isErr?'#C17A5D':'#2C2C2C'; t.classList.remove('hide'); setTimeout(()=>t.classList.add('hide'),3000); }
-
-  function getTodayStr() { const d=new Date(); return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`; }
-
-  function updateCountersToday() {
-    const today = getTodayStr();
-    const todayOrders = orders.filter(o => o.createdDate === today);
-    document.getElementById('counterPaid').innerText = todayOrders.filter(o=>o.status==='paid').length;
-    document.getElementById('counterPending').innerText = todayOrders.filter(o=>o.status==='pending').length;
-    document.getElementById('counterCancelled').innerText = todayOrders.filter(o=>o.status==='cancelled').length;
-    document.getElementById('counterDeleted').innerText = todayOrders.filter(o=>o.status==='deleted').length;
-  }
-
-  function applyFilters() {
-    let temp = [...orders];
-    if (currentFilter.status !== 'all') temp = temp.filter(o => o.status === currentFilter.status);
-    if (currentFilter.month !== 'all') temp = temp.filter(o => { let parts=o.createdDate?.split('/'); if(!parts) return false; return (parseInt(parts[1])-1) === parseInt(currentFilter.month); });
-    if (currentFilter.year) temp = temp.filter(o => o.createdDate?.split('/')[2] === currentFilter.year);
-    if (currentFilter.search) { const q=currentFilter.search.toLowerCase(); temp = temp.filter(o => o.customerName?.toLowerCase().includes(q) || o.invoiceId?.toLowerCase().includes(q)); }
-    filteredOrders = temp;
-    currentPage = 1;
-    renderTable();
-    updateCountersToday();
-  }
-
-  function renderTable() {
-    const start = (currentPage-1)*rowsPerPage;
-    const pageData = filteredOrders.slice(start, start+rowsPerPage);
-    const tbody = document.getElementById('ordersBody');
-    if (!pageData.length) { tbody.innerHTML = '<tr><td colspan="7">Tidak ada data</td></tr>'; }
-    else {
-      tbody.innerHTML = pageData.map(order => {
-        let statusLabel = '', statusClass='';
-        if (order.status==='pending') { statusLabel='Pending'; statusClass='status-pending'; }
-        else if (order.status==='paid') { statusLabel='Lunas'; statusClass='status-paid'; }
-        else if (order.status==='cancelled') { statusLabel='Batal'; statusClass='status-cancelled'; }
-        else { statusLabel='Delete'; statusClass='status-deleted'; }
-        let buttons = `<button class="btn-edit" data-idx="${order._idx}">✏️ Edit</button>`;
-        if (order.status === 'deleted') buttons += `<button class="btn-restore" data-idx="${order._idx}">♻️ Restore</button>`;
-        buttons += `<button class="btn-delete-permanent" data-idx="${order._idx}">💀 Hapus Permanen</button>`;
-        return `<tr>
-          <td><strong>${escapeHtml(order.invoiceId)}</strong></td>
-          <td>${escapeHtml(order.customerName)}<br><small>${order.phone||'-'}</small></td>
-          <td>${formatRupiah(order.totalAmount)}</td>
-          <td>${order.paymentMethod||'-'}</td>
-          <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
-          <td>${order.createdDate||''} ${order.createdTime||''}</td>
-          <td>${buttons}</td>
-        </tr>`;
-      }).join('');
-    }
-    const totalPages = Math.ceil(filteredOrders.length / rowsPerPage);
-    document.getElementById('pageInfo').innerText = `Halaman ${currentPage} dari ${totalPages||1}`;
-    // attach events
-    document.querySelectorAll('.btn-edit').forEach(btn => { btn.onclick = () => openEditModal(parseInt(btn.dataset.idx)); });
-    document.querySelectorAll('.btn-restore').forEach(btn => { btn.onclick = async () => { let idx=parseInt(btn.dataset.idx); orders[idx].status='pending'; await saveToCloud(); await loadFromCloud(); applyFilters(); showToast('Invoice direstore ke pending'); }; });
-    document.querySelectorAll('.btn-delete-permanent').forEach(btn => { btn.onclick = async () => { if(confirm('Hapus permanen? Tidak bisa dikembalikan.')){ let idx=parseInt(btn.dataset.idx); orders.splice(idx,1); await saveToCloud(); await loadFromCloud(); applyFilters(); showToast('Invoice dihapus permanen'); } }; });
-  }
-
-  function openEditModal(idx) {
-    currentEditIdx = idx;
-    const o = orders[idx];
-    document.getElementById('editName').value = o.customerName || '';
-    document.getElementById('editTotal').value = o.totalAmount || 0;
-    document.getElementById('editMethod').value = o.paymentMethod || '';
-    document.getElementById('editNote').value = o.note || '';
-    document.getElementById('editModal').classList.add('show');
-  }
-  document.getElementById('saveEditBtn').onclick = async () => {
-    if (currentEditIdx !== null) {
-      orders[currentEditIdx].customerName = document.getElementById('editName').value;
-      orders[currentEditIdx].totalAmount = parseInt(document.getElementById('editTotal').value) || 0;
-      orders[currentEditIdx].paymentMethod = document.getElementById('editMethod').value;
-      orders[currentEditIdx].note = document.getElementById('editNote').value;
-      orders[currentEditIdx].updatedAt = new Date().toISOString();
-      await saveToCloud();
-      await loadFromCloud();
-      applyFilters();
-      document.getElementById('editModal').classList.remove('show');
-      showToast('Invoice berhasil diupdate');
-    }
-  };
-  document.getElementById('closeModalBtn').onclick = () => document.getElementById('editModal').classList.remove('show');
-
-  // Reset counter (tanpa hapus data, hanya reset dailyCounter di JSONBin? spec reset counter harian ke 0)
-  // Kita simpan dailyCounter di JSONBin struktur terpisah.
-  async function resetDailyCounter() {
-    if (!confirm('⚠️ RESET COUNTER HARIAN? Semua hitungan hari ini akan menjadi 0. Data invoice tidak dihapus. Harus download riwayat dulu.')) return;
-    // force download riwayat hari ini
-    const today = getTodayStr();
-    const todayOrders = orders.filter(o => o.createdDate === today);
-    if (todayOrders.length > 0) {
-      let content = `RIWAYAT INVOICE HARI INI (${today})\n\n`;
-      todayOrders.forEach(o => { content += `${o.invoiceId} | ${o.customerName} | ${o.status} | ${formatRupiah(o.totalAmount)}\n`; });
-      const blob = new Blob([content], {type: 'text/plain'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `riwayat_${today}.txt`;
-      a.click();
-    }
-    // reset counter hanya untuk display? spec juga reset dailyCounter di database.
-    // Kita buat field dailyCounter di JSONBin.
-    let dailyCounter = {};
-    try {
-      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Access-Key': ACCESS_KEY } });
-      const data = await res.json();
-      dailyCounter = data.record?.dailyCounter || {};
-    } catch(e) {}
-    dailyCounter[today] = { paid:0, pending:0, cancelled:0, deleted:0, resetAt: new Date().toISOString() };
-    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Access-Key': ACCESS_KEY },
-      body: JSON.stringify({ orders: orders.map(({_idx,...rest})=>rest), dailyCounter, resetLog: [] })
-    });
-    await loadFromCloud();
-    applyFilters();
-    showToast('Counter harian direset ke 0');
-  }
-
-  // Download semua invoice dalam format TXT
-  function downloadAllTxt() {
-    if (!orders.length) { showToast('Tidak ada data', true); return; }
-    let content = `LAPORAN SEMUA INVOICE (${new Date().toLocaleString()})\n\n`;
-    orders.forEach(o => {
-      content += `ID: ${o.invoiceId} | ${o.customerName} | ${o.status} | Total: ${formatRupiah(o.totalAmount)} | Tgl: ${o.createdDate}\n`;
-    });
-    const blob = new Blob([content], {type: 'text/plain'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `all_invoices_${Date.now()}.txt`;
-    a.click();
-    showToast('Download semua invoice TXT selesai');
-  }
-
-  // JSONBin ops
-  async function loadFromCloud() {
-    try {
-      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Access-Key': ACCESS_KEY } });
-      const data = await res.json();
-      let loaded = (data.record && data.record.orders) ? data.record.orders : [];
-      orders = loaded.map((item,i) => ({ ...item, _idx: i }));
-      orders.sort((a,b)=> (b.createdAt||0) - (a.createdAt||0));
-      applyFilters();
-      return true;
-    } catch(e) { showToast('Gagal sync', true); return false; }
-  }
-  async function saveToCloud() {
-    const toSave = orders.map(({_idx,...rest})=>rest);
-    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Access-Key': ACCESS_KEY },
-      body: JSON.stringify({ orders: toSave, lastUpdated: new Date().toISOString() })
-    });
-  }
-  function startAutoSync() { if(syncInterval) clearInterval(syncInterval); syncInterval = setInterval(async ()=>{ await loadFromCloud(); }, 5000); }
-
-  // Event listeners filter
-  document.getElementById('filterStatus').onchange = (e) => { currentFilter.status = e.target.value; applyFilters(); };
-  document.getElementById('filterMonth').onchange = (e) => { currentFilter.month = e.target.value; applyFilters(); };
-  document.getElementById('filterYear').onchange = (e) => { currentFilter.year = e.target.value; applyFilters(); };
-  document.getElementById('searchInput').oninput = (e) => { currentFilter.search = e.target.value; applyFilters(); };
-  document.getElementById('todayBtn').onclick = () => { currentFilter.status='all'; currentFilter.month='all'; currentFilter.year=new Date().getFullYear().toString(); document.getElementById('filterStatus').value='all'; document.getElementById('filterMonth').value='all'; document.getElementById('filterYear').value=currentFilter.year; document.getElementById('searchInput').value=''; applyFilters(); };
-  document.getElementById('yesterdayBtn').onclick = () => { const y=new Date(); y.setDate(y.getDate()-1); currentFilter.year=y.getFullYear().toString(); currentFilter.month='all'; currentFilter.status='all'; document.getElementById('filterYear').value=currentFilter.year; document.getElementById('filterMonth').value='all'; document.getElementById('filterStatus').value='all'; document.getElementById('searchInput').value=''; applyFilters(); };
-  document.getElementById('prevPageBtn').onclick = () => { if(currentPage>1){ currentPage--; renderTable(); } };
-  document.getElementById('nextPageBtn').onclick = () => { if(currentPage*rowsPerPage < filteredOrders.length){ currentPage++; renderTable(); } };
-  document.getElementById('downloadAllBtn').onclick = downloadAllTxt;
-  document.getElementById('resetCounterBtn').onclick = resetDailyCounter;
-  document.getElementById('logoutBtn').onclick = () => { if(confirm('Logout?')){ localStorage.clear(); location.reload(); } };
-
-  (async () => {
-    await loadFromCloud();
-    startAutoSync();
-  })();
+  function formatRupiah(n) { return 'Rp ' + (n||0).toLocaleString('id-ID'); }
+  function escapeHtml(s) { return String(s||'').replace(/[&<>]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+  function showToast(msg,err=false){ const t=document.getElementById('toast'); t.textContent=msg; t.style.background=err?'#C17A5D':'#2C2C2C'; t.classList.remove('hide'); setTimeout(()=>t.classList.add('hide'),3000); }
+  function getTodayStr(){ const d=new Date(); return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`; }
+  function updateCountersToday(){ const today=getTodayStr(), tod=orders.filter(o=>o.createdDate===today); document.getElementById('counterPaid').innerText=tod.filter(o=>o.status==='paid').length; document.getElementById('counterPending').innerText=tod.filter(o=>o.status==='pending').length; document.getElementById('counterCancelled').innerText=tod.filter(o=>o.status==='cancelled').length; document.getElementById('counterDeleted').innerText=tod.filter(o=>o.status==='deleted').length; }
+  function applyFilters(){ let temp=[...orders]; if(currentFilter.status!=='all') temp=temp.filter(o=>o.status===currentFilter.status); if(currentFilter.month!=='all') temp=temp.filter(o=>{let p=o.createdDate?.split('/'); if(!p) return false; return (parseInt(p[1])-1)===parseInt(currentFilter.month);}); if(currentFilter.year) temp=temp.filter(o=>o.createdDate?.split('/')[2]===currentFilter.year); if(currentFilter.search){ const q=currentFilter.search.toLowerCase(); temp=temp.filter(o=>o.customerName?.toLowerCase().includes(q)||o.invoiceId?.toLowerCase().includes(q)); } filteredOrders=temp; currentPage=1; renderTable(); updateCountersToday(); }
+  function renderTable(){ const start=(currentPage-1)*rowsPerPage, pageData=filteredOrders.slice(start,start+rowsPerPage); const tbody=document.getElementById('ordersBody'); if(!pageData.length){ tbody.innerHTML='<tr><td colspan="7">📭 Tidak ada invoice</td></tr>'; }else{ tbody.innerHTML=pageData.map(order=>{ let statusLabel='',statusClass=''; if(order.status==='pending'){statusLabel='Pending';statusClass='status-pending';}else if(order.status==='paid'){statusLabel='Lunas';statusClass='status-paid';}else if(order.status==='cancelled'){statusLabel='Batal';statusClass='status-cancelled';}else{statusLabel='Delete';statusClass='status-deleted';} let buttons=`<button class="btn-edit" data-idx="${order._idx}">✏️ Edit</button>`; if(order.status==='deleted') buttons+=`<button class="btn-restore" data-idx="${order._idx}">♻️ Restore</button>`; buttons+=`<button class="btn-delete-permanent" data-idx="${order._idx}">💀 Hapus</button>`; return `<tr><td data-label="Invoice ID"><strong>${escapeHtml(order.invoiceId)}</strong></td><td data-label="Customer">${escapeHtml(order.customerName)}<br><small>${order.phone||'-'}</small></td><td data-label="Total">${formatRupiah(order.totalAmount)}</td><td data-label="Metode">${order.paymentMethod||'-'}</td><td data-label="Status"><span class="status-badge ${statusClass}">${statusLabel}</span></td><td data-label="Tanggal">${order.createdDate||''} ${order.createdTime||''}</td><td data-label="Aksi">${buttons}</td></tr>`; }).join(''); } const totalPages=Math.ceil(filteredOrders.length/rowsPerPage); document.getElementById('pageInfo').innerText=`Halaman ${currentPage} dari ${totalPages||1}`; document.querySelectorAll('.btn-edit').forEach(btn=>btn.onclick=()=>openEditModal(parseInt(btn.dataset.idx))); document.querySelectorAll('.btn-restore').forEach(btn=>btn.onclick=async()=>{ let idx=parseInt(btn.dataset.idx); orders[idx].status='pending'; await saveToCloud(); await loadFromCloud(); applyFilters(); showToast('Invoice direstore ke pending'); }); document.querySelectorAll('.btn-delete-permanent').forEach(btn=>btn.onclick=async()=>{ if(confirm('Hapus permanen? Tidak bisa dikembalikan.')){ let idx=parseInt(btn.dataset.idx); orders.splice(idx,1); await saveToCloud(); await loadFromCloud(); applyFilters(); showToast('Invoice dihapus permanen'); } }); }
+  function openEditModal(idx){ currentEditIdx=idx; const o=orders[idx]; document.getElementById('editName').value=o.customerName||''; document.getElementById('editTotal').value=o.totalAmount||0; document.getElementById('editMethod').value=o.paymentMethod||''; document.getElementById('editNote').value=o.note||''; document.getElementById('editModal').classList.add('show'); }
+  document.getElementById('saveEditBtn').onclick=async()=>{ if(currentEditIdx!==null){ orders[currentEditIdx].customerName=document.getElementById('editName').value; orders[currentEditIdx].totalAmount=parseInt(document.getElementById('editTotal').value)||0; orders[currentEditIdx].paymentMethod=document.getElementById('editMethod').value; orders[currentEditIdx].note=document.getElementById('editNote').value; orders[currentEditIdx].updatedAt=new Date().toISOString(); await saveToCloud(); await loadFromCloud(); applyFilters(); document.getElementById('editModal').classList.remove('show'); showToast('Invoice berhasil diupdate'); } };
+  document.getElementById('closeModalBtn').onclick=()=>document.getElementById('editModal').classList.remove('show');
+  async function resetDailyCounter(){ if(!confirm('⚠️ RESET COUNTER HARIAN? Hitungan hari ini menjadi 0. Harus download riwayat dulu.')) return; const today=getTodayStr(); const todayOrders=orders.filter(o=>o.createdDate===today); if(todayOrders.length){ let content=`RIWAYAT INVOICE HARI INI (${today})\n\n`; todayOrders.forEach(o=>{ content+=`${o.invoiceId} | ${o.customerName} | ${o.status} | ${formatRupiah(o.totalAmount)}\n`; }); const blob=new Blob([content],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`riwayat_${today}.txt`; a.click(); } let dailyCounter={}; try{ const res=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{headers:{'X-Access-Key':ACCESS_KEY}}); const data=await res.json(); dailyCounter=data.record?.dailyCounter||{}; }catch(e){} dailyCounter[today]={paid:0,pending:0,cancelled:0,deleted:0,resetAt:new Date().toISOString()}; await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Access-Key':ACCESS_KEY},body:JSON.stringify({orders:orders.map(({_idx,...rest})=>rest),dailyCounter,resetLog:[]})}); await loadFromCloud(); applyFilters(); showToast('Counter harian direset ke 0'); }
+  function downloadAllTxt(){ if(!orders.length){ showToast('Tidak ada data',true); return; } let content=`LAPORAN SEMUA INVOICE (${new Date().toLocaleString()})\n\n`; orders.forEach(o=>{ content+=`ID: ${o.invoiceId} | ${o.customerName} | ${o.status} | Total: ${formatRupiah(o.totalAmount)} | Tgl: ${o.createdDate}\n`; }); const blob=new Blob([content],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`all_invoices_${Date.now()}.txt`; a.click(); showToast('Download semua invoice TXT selesai'); }
+  async function loadFromCloud(){ try{ const res=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{headers:{'X-Access-Key':ACCESS_KEY}}); if(!res.ok) throw new Error(); const data=await res.json(); let loaded=data.record?.orders||[]; orders=loaded.map((item,i)=>({...item,_idx:i})); orders.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); applyFilters(); return true; }catch(e){ showToast('Gagal sync',true); return false; } }
+  async function saveToCloud(){ const toSave=orders.map(({_idx,...rest})=>rest); await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Access-Key':ACCESS_KEY},body:JSON.stringify({orders:toSave,lastUpdated:new Date().toISOString()})}); }
+  function startAutoSync(){ if(syncInterval) clearInterval(syncInterval); syncInterval=setInterval(async()=>{await loadFromCloud();},5000); }
+  document.getElementById('filterStatus').onchange=e=>{currentFilter.status=e.target.value; applyFilters();};
+  document.getElementById('filterMonth').onchange=e=>{currentFilter.month=e.target.value; applyFilters();};
+  document.getElementById('filterYear').onchange=e=>{currentFilter.year=e.target.value; applyFilters();};
+  document.getElementById('searchInput').oninput=e=>{currentFilter.search=e.target.value; applyFilters();};
+  document.getElementById('todayBtn').onclick=()=>{const d=new Date(); currentFilter.status='all'; currentFilter.month='all'; currentFilter.year=d.getFullYear().toString(); document.getElementById('filterStatus').value='all'; document.getElementById('filterMonth').value='all'; document.getElementById('filterYear').value=currentFilter.year; document.getElementById('searchInput').value=''; applyFilters();};
+  document.getElementById('yesterdayBtn').onclick=()=>{const y=new Date(); y.setDate(y.getDate()-1); currentFilter.year=y.getFullYear().toString(); currentFilter.month='all'; currentFilter.status='all'; document.getElementById('filterYear').value=currentFilter.year; document.getElementById('filterMonth').value='all'; document.getElementById('filterStatus').value='all'; document.getElementById('searchInput').value=''; applyFilters();};
+  document.getElementById('prevPageBtn').onclick=()=>{if(currentPage>1){currentPage--;renderTable();}};
+  document.getElementById('nextPageBtn').onclick=()=>{if(currentPage*rowsPerPage<filteredOrders.length){currentPage++;renderTable();}};
+  document.getElementById('downloadAllBtn').onclick=downloadAllTxt;
+  document.getElementById('resetCounterBtn').onclick=resetDailyCounter;
+  document.getElementById('logoutBtn').onclick=()=>{if(confirm('Logout?')){localStorage.clear(); location.reload();}};
+  (async()=>{await loadFromCloud(); startAutoSync();})();
 </script>
 </body>
 </html>
