@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Kasir Dashboard · Berkah Perdana</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #F0EBE1; /* sand */
+      font-family: system-ui, 'Segoe UI', 'Noto Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+      padding: 20px;
+      color: #2C2C2C;
+    }
+    .container { max-width: 1400px; margin: 0 auto; }
+    /* header */
+    .header {
+      background: #2C2C2C;
+      color: #FDFBF7;
+      padding: 16px 24px;
+      border-radius: 32px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .user-info { background: #4A4A4A; padding: 6px 16px; border-radius: 40px; font-size: 14px; }
+    .logout-btn { background: #9E9A8C; border: none; padding: 6px 16px; border-radius: 40px; color: white; cursor: pointer; font-weight: 500; }
+    /* counter cards */
+    .counter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: #FDFBF7;
+      border-radius: 28px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      border: 1px solid #E8D9C5;
+    }
+    .card .num { font-size: 32px; font-weight: 800; }
+    .card .label { font-size: 12px; letter-spacing: 1px; margin-top: 6px; }
+    .green { color: #4A7C59; }
+    .yellow { color: #D4A373; }
+    .red { color: #C17A5D; }
+    .pink { color: #C17A5D; opacity: 0.8; }
+    /* filter bar */
+    .filter-bar {
+      background: #FDFBF7;
+      border-radius: 28px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid #E8D9C5;
+    }
+    .filter-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      background: #F0EBE1;
+      padding: 5px 12px;
+      border-radius: 40px;
+    }
+    .filter-group select, .filter-group input {
+      background: transparent;
+      border: none;
+      padding: 8px 0;
+      font-size: 13px;
+      outline: none;
+    }
+    .btn-filter {
+      background: #E8D9C5;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .btn-filter.active {
+      background: #4A7C59;
+      color: white;
+    }
+    .search-box input {
+      background: #FDFBF7;
+      border: 1px solid #E8D9C5;
+      padding: 8px 16px;
+      border-radius: 40px;
+      width: 220px;
+    }
+    /* table wrapper */
+    .table-wrapper {
+      background: #FDFBF7;
+      border-radius: 24px;
+      border: 1px solid #E8D9C5;
+      overflow-x: auto;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 800px;
+    }
+    th, td {
+      padding: 14px 12px;
+      text-align: left;
+      border-bottom: 1px solid #F0EBE1;
+    }
+    th {
+      background: #F9F5EE;
+      font-weight: 600;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .status-pending { background: #E8D9C5; color: #2C2C2C; }
+    .status-paid { background: #4A7C59; color: white; }
+    .status-cancelled { background: #C17A5D; color: white; }
+    .status-deleted { background: #9E9A8C; color: white; }
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .btn-paid { background: #4A7C59; color: white; }
+    .btn-cancel { background: #C17A5D; color: white; }
+    .btn-delete { background: #9E9A8C; color: white; }
+    .btn-print { background: #D4A373; color: white; }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+      margin-bottom: 24px;
+    }
+    .pagination button {
+      background: #E8D9C5;
+      padding: 8px 16px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: #2C2C2C;
+      color: white;
+      padding: 12px;
+      border-radius: 40px;
+      text-align: center;
+      z-index: 9999;
+      max-width: 400px;
+      margin: 0 auto;
+      transition: 0.2s;
+    }
+    .toast.hide { opacity: 0; visibility: hidden; }
+    footer { text-align: center; font-size: 11px; color: #9E9A8C; margin-top: 20px; }
+    @media (max-width: 700px) {
+      body { padding: 12px; }
+      .filter-bar { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h2>🍚 Kasir Dashboard · Berkah Perdana</h2>
+    <div class="user-info" id="userEmailDisplay">Kasir</div>
+  </div>
+
+  <!-- Counter cards (HARI INI) -->
+  <div class="counter-grid">
+    <div class="card"><div class="num green" id="counterPaid">0</div><div class="label">✅ Lunas (Hari Ini)</div></div>
+    <div class="card"><div class="num yellow" id="counterPending">0</div><div class="label">⏳ Pending (Hari Ini)</div></div>
+    <div class="card"><div class="num red" id="counterCancelled">0</div><div class="label">❌ Batal (Hari Ini)</div></div>
+    <div class="card"><div class="num pink" id="counterDeleted">0</div><div class="label">🗑️ Delete (Hari Ini)</div></div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span>Status:</span>
+      <select id="filterStatus">
+        <option value="all">Semua</option>
+        <option value="pending">Pending</option>
+        <option value="paid">Lunas</option>
+        <option value="cancelled">Batal</option>
+        <option value="deleted">Delete</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span>Bulan:</span>
+      <select id="filterMonth">
+        <option value="all">Semua</option>
+        <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option>
+        <option value="3">April</option><option value="4">Mei</option><option value="5">Juni</option>
+        <option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option>
+        <option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span>Tahun:</span>
+      <select id="filterYear">
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <button id="todayBtn" class="btn-filter">Hari Ini</button>
+      <button id="yesterdayBtn" class="btn-filter">Kemarin</button>
+    </div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Cari Nama atau Invoice...">
+    </div>
+  </div>
+
+  <!-- Tabel dengan pagination -->
+  <div class="table-wrapper">
+    <table id="ordersTable">
+      <thead>
+        <tr><th>Invoice ID</th><th>Customer</th><th>Total</th><th>Metode</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr>
+      </thead>
+      <tbody id="ordersBody"><tr><td colspan="7" style="text-align:center;">Memuat data...</td></tr></tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <button id="prevPageBtn">◀ Prev</button>
+    <span id="pageInfo">Halaman 1 dari 1</span>
+    <button id="nextPageBtn">Next ▶</button>
+  </div>
+  <footer>📌 Klik Bayar → invoice akan hilang dari daftar kasir. Batal/Delete tetap tercatat.</footer>
+</div>
+<div id="toast" class="toast hide"></div>
+
+<script>
+  // ==================== KONFIGURASI JSONBin (GANTI PUNYA ANDA) ====================
+  const ACCESS_KEY = '$2a$10$r4eYFvDwMt8h6E.5A0XZ4.RPdBz7kMen0j.8ntiOWVtsh/8GmPbyi'; // GANTI
+  const BIN_ID = '6a0a995c250b1311c367be91'; // GANTI
+
+  let orders = [];
+  let filteredOrders = [];
+  let currentPage = 1;
+  const rowsPerPage = 50;
+  let syncInterval = null;
+  let currentFilter = { status: 'all', month: 'all', year: '2026', search: '' };
+
+  // Helper
+  function formatRupiah(angka) { return 'Rp ' + (angka || 0).toLocaleString('id-ID'); }
+  function escapeHtml(str) { return String(str || '').replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+  function showToast(msg, isErr=false) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.style.background = isErr ? '#C17A5D' : '#2C2C2C';
+    toast.classList.remove('hide');
+    setTimeout(() => toast.classList.add('hide'), 3000);
+  }
+
+  // Ambil tanggal hari ini format DD/MM/YYYY
+  function getTodayStr() {
+    const d = new Date();
+    return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
+  }
+
+  // Filter & search
+  function applyFilters() {
+    let temp = [...orders];
+    // status filter
+    if (currentFilter.status !== 'all') {
+      temp = temp.filter(o => o.status === currentFilter.status);
+    }
+    // bulan & tahun filter (createdDate format DD/MM/YYYY)
+    if (currentFilter.month !== 'all') {
+      temp = temp.filter(o => {
+        let parts = o.createdDate?.split('/');
+        if (!parts || parts.length !== 3) return false;
+        let month = parseInt(parts[1]) - 1;
+        return month === parseInt(currentFilter.month);
+      });
+    }
+    if (currentFilter.year) {
+      temp = temp.filter(o => {
+        let parts = o.createdDate?.split('/');
+        if (!parts) return false;
+        return parts[2] === currentFilter.year;
+      });
+    }
+    // search
+    if (currentFilter.search) {
+      const q = currentFilter.search.toLowerCase();
+      temp = temp.filter(o => o.customerName?.toLowerCase().includes(q) || o.invoiceId?.toLowerCase().includes(q));
+    }
+    filteredOrders = temp;
+    currentPage = 1;
+    renderTable();
+    updateCountersToday(); // update counter berdasarkan data asli (orders) untuk hari ini
+  }
+
+  // Counter hari ini berdasarkan orders (bukan filtered)
+  function updateCountersToday() {
+    const today = getTodayStr();
+    const todayOrders = orders.filter(o => o.createdDate === today);
+    const paid = todayOrders.filter(o => o.status === 'paid').length;
+    const pending = todayOrders.filter(o => o.status === 'pending').length;
+    const cancelled = todayOrders.filter(o => o.status === 'cancelled').length;
+    const deleted = todayOrders.filter(o => o.status === 'deleted').length;
+    document.getElementById('counterPaid').innerText = paid;
+    document.getElementById('counterPending').innerText = pending;
+    document.getElementById('counterCancelled').innerText = cancelled;
+    document.getElementById('counterDeleted').innerText = deleted;
+  }
+
+  function renderTable() {
+    const start = (currentPage-1)*rowsPerPage;
+    const pageData = filteredOrders.slice(start, start+rowsPerPage);
+    const tbody = document.getElementById('ordersBody');
+    if (pageData.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">📭 Tidak ada invoice</td></tr>';
+    } else {
+      tbody.innerHTML = pageData.map(order => {
+        let statusLabel = '';
+        let statusClass = '';
+        if (order.status === 'pending') { statusLabel = 'Pending'; statusClass='status-pending'; }
+        else if (order.status === 'paid') { statusLabel = 'Lunas'; statusClass='status-paid'; }
+        else if (order.status === 'cancelled') { statusLabel = 'Batal'; statusClass='status-cancelled'; }
+        else { statusLabel = 'Delete'; statusClass='status-deleted'; }
+        // Tombol aksi kasir: hanya untuk status pending (Bayar, Batal, Delete)
+        let actionButtons = '';
+        if (order.status === 'pending') {
+          actionButtons = `<button class="btn-paid" data-idx="${order._idx}">✅ Bayar</button>
+                           <button class="btn-cancel" data-idx="${order._idx}">❌ Batal</button>
+                           <button class="btn-delete" data-idx="${order._idx}">🗑️ Delete</button>`;
+        } else if (order.status === 'paid') {
+          // hanya tombol PDF (read-only)
+          actionButtons = `<button class="btn-print" data-idx="${order._idx}">📄 PDF</button>`;
+        }
+        return `<tr>
+          <td><strong>${escapeHtml(order.invoiceId)}</strong></td>
+          <td>${escapeHtml(order.customerName)}<br><small>${order.phone || '-'}</small></td>
+          <td>${formatRupiah(order.totalAmount)}</td>
+          <td>${order.paymentMethod || '-'}</td>
+          <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
+          <td style="font-size:11px;">${order.createdDate || ''} ${order.createdTime || ''}</td>
+          <td>${actionButtons}</td>
+        </tr>`;
+      }).join('');
+    }
+    // update pagination info
+    const totalPages = Math.ceil(filteredOrders.length / rowsPerPage);
+    document.getElementById('pageInfo').innerText = `Halaman ${currentPage} dari ${totalPages || 1}`;
+    // attach event listeners untuk tombol dinamis
+    document.querySelectorAll('.btn-paid').forEach(btn => {
+      btn.onclick = async () => { await updateStatus(parseInt(btn.dataset.idx), 'paid'); };
+    });
+    document.querySelectorAll('.btn-cancel').forEach(btn => {
+      btn.onclick = async () => { await updateStatus(parseInt(btn.dataset.idx), 'cancelled'); };
+    });
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.onclick = async () => { await updateStatus(parseInt(btn.dataset.idx), 'deleted'); };
+    });
+    document.querySelectorAll('.btn-print').forEach(btn => {
+      btn.onclick = () => { printInvoice(parseInt(btn.dataset.idx)); };
+    });
+  }
+
+  // Fungsi update status (paid, cancelled, deleted)
+  async function updateStatus(idx, newStatus) {
+    const order = orders[idx];
+    if (!order) return;
+    const oldStatus = order.status;
+    order.status = newStatus;
+    order.updatedAt = new Date().toISOString();
+    order.updatedBy = 'kasir';
+    // Jika status paid, invoice akan hilang dari tampilan kasir (karena filter default 'all' tapi paid tetap ada, tapi nanti di render ulang)
+    await saveToCloud();
+    // Refresh data dari cloud lalu terapkan filter
+    await loadFromCloud();
+    applyFilters();
+    showToast(`Invoice ${order.invoiceId} → ${newStatus === 'paid' ? 'Lunas' : (newStatus==='cancelled'?'Batal':'Delete')}`);
+  }
+
+  async function printInvoice(idx) {
+    const order = orders[idx];
+    if (!order) return;
+    // buat print window dengan invoice read-only
+    const win = window.open('', '_blank');
+    win.document.write(`
+      <html><head><title>Invoice ${order.invoiceId}</title>
+      <style>body { font-family: monospace; padding: 20px; } .inv { max-width: 600px; margin: auto; }</style>
+      </head><body><div class="inv">
+      <h2>BERKAH PERDANA ENTERPRISE</h2>
+      <p>Invoice: ${order.invoiceId}<br>Tanggal: ${order.createdDate} ${order.createdTime}<br>Status: ${order.status}</p>
+      <hr><p>Nama: ${order.customerName}<br>Phone: ${order.phone}<br>Metode: ${order.paymentMethod}<br>Total: ${formatRupiah(order.totalAmount)}</p>
+      <p>Catatan: ${order.note || '-'}</p>
+      <hr><p><em>Invoice ini sah tanpa tanda tangan.</em></p>
+      </div></body></html>
+    `);
+    win.document.close();
+    win.print();
+  }
+
+  // ==================== JSONBin OPERATIONS ====================
+  async function loadFromCloud() {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { 'X-Access-Key': ACCESS_KEY }
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      let loaded = (data.record && data.record.orders) ? data.record.orders : [];
+      // tambahkan _idx untuk referensi
+      orders = loaded.map((item, i) => ({ ...item, _idx: i }));
+      // urutkan berdasarkan createdDate terbaru
+      orders.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+      applyFilters();
+      return true;
+    } catch(e) {
+      console.warn(e);
+      showToast('Gagal sync dari cloud', true);
+      return false;
+    }
+  }
+
+  async function saveToCloud() {
+    try {
+      // hapus _idx sebelum simpan
+      const toSave = orders.map(({ _idx, ...rest }) => rest);
+      const payload = { orders: toSave, lastUpdated: new Date().toISOString() };
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Access-Key': ACCESS_KEY },
+        body: JSON.stringify(payload)
+      });
+      return true;
+    } catch(e) { console.error(e); return false; }
+  }
+
+  // Auto sync periodik
+  function startAutoSync() {
+    if (syncInterval) clearInterval(syncInterval);
+    syncInterval = setInterval(async () => {
+      await loadFromCloud();
+    }, 5000);
+  }
+
+  // Event listeners filter
+  document.getElementById('filterStatus').addEventListener('change', (e) => { currentFilter.status = e.target.value; applyFilters(); });
+  document.getElementById('filterMonth').addEventListener('change', (e) => { currentFilter.month = e.target.value; applyFilters(); });
+  document.getElementById('filterYear').addEventListener('change', (e) => { currentFilter.year = e.target.value; applyFilters(); });
+  document.getElementById('searchInput').addEventListener('input', debounce((e) => { currentFilter.search = e.target.value; applyFilters(); }, 300));
+  document.getElementById('todayBtn').onclick = () => {
+    const today = new Date();
+    const day = today.getDate().toString().padStart(2,'0');
+    const month = (today.getMonth()+1).toString().padStart(2,'0');
+    const year = today.getFullYear();
+    const dateStr = `${day}/${month}/${year}`;
+    currentFilter.search = dateStr; // hack: cari berdasarkan tanggal? tapi lebih mudah kita filter via createdDate exact
+    // alternative: kita buat filter custom
+    currentFilter.status = 'all';
+    currentFilter.month = 'all';
+    currentFilter.year = year.toString();
+    document.getElementById('filterStatus').value = 'all';
+    document.getElementById('filterMonth').value = 'all';
+    document.getElementById('filterYear').value = year;
+    document.getElementById('searchInput').value = '';
+    applyFilters();
+  };
+  document.getElementById('yesterdayBtn').onclick = () => {
+    const yest = new Date(); yest.setDate(yest.getDate()-1);
+    const day = yest.getDate().toString().padStart(2,'0');
+    const month = (yest.getMonth()+1).toString().padStart(2,'0');
+    const year = yest.getFullYear();
+    const dateStr = `${day}/${month}/${year}`;
+    currentFilter.search = dateStr;
+    currentFilter.status = 'all';
+    currentFilter.month = 'all';
+    currentFilter.year = year.toString();
+    document.getElementById('filterStatus').value = 'all';
+    document.getElementById('filterMonth').value = 'all';
+    document.getElementById('filterYear').value = year;
+    document.getElementById('searchInput').value = '';
+    applyFilters();
+  };
+  document.getElementById('prevPageBtn').onclick = () => { if (currentPage > 1) { currentPage--; renderTable(); } };
+  document.getElementById('nextPageBtn').onclick = () => { if (currentPage * rowsPerPage < filteredOrders.length) { currentPage++; renderTable(); } };
+
+  function debounce(fn, delay) {
+    let timer;
+    return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); };
+  }
+
+  // init
+  (async () => {
+    await loadFromCloud();
+    startAutoSync();
+  })();
+</script>
+</body>
+</html>
