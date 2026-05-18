@@ -2,954 +2,520 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-/>
-
-<title>Berkah Perdana | Amri Dev Profile</title>
-
-<meta
-  name="description"
-  content="Berkah Perdana • Amri Dev — Japan Shibui inspired web developer portfolio built with HTML, CSS and JavaScript."
-/>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Berkah Perdana | Amri Dev</title>
+<meta name="description" content="Amri Dev - Web Developer Portfolio" />
 <meta name="theme-color" content="#f7f1e7" />
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Shippori+Mincho:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
-
 <style>
-/* =========================================================
-   BERKAH PERDANA • AMRI DEV
-   JAPAN SHIBUI PORTFOLIO
-   ========================================================= */
+/* =========================
+   LIGHTWEIGHT + BACKGROUND CHANGE
+   RAM 1GB OPTIMIZED
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  background: #f7f1e7;
+  color: #1f2b25;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+:root {
+  --cream: #f7f1e7;
+  --ink: #1f2b25;
+  --ink-soft: #55655e;
+  --red: #a12b2b;
+  --green: #2f4b3f;
+  --radius: 24px;
+  --max: 1280px;
+}
+
+/* Simple scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #efe7d8; }
+::-webkit-scrollbar-thumb { background: #b8a88a; border-radius: 10px; }
+
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin: auto;
+  padding-inline: 20px;
+}
+
+section {
+  padding: 70px 0;
+  scroll-margin-top: 80px;
+}
+
+.section-head { margin-bottom: 40px; }
+.section-sub { color: var(--red); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 10px; }
+.section-title { font-family: 'Shippori Mincho', serif; font-size: clamp(1.8rem, 6vw, 3rem); line-height: 1.15; margin-bottom: 15px; }
+.section-text { color: var(--ink-soft); max-width: 650px; }
 
 /* =========================
-   RESET
+   BACKGROUND IMAGE SYSTEM - RINGAN
 ========================= */
-*,
-*::before,
-*::after{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+.bg-container {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  background: #f7f1e7;
 }
 
-html{
-  scroll-behavior:smooth;
+.bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  filter: brightness(0.98) contrast(1.05);
 }
 
-body{
-  font-family:'Zen Kaku Gothic New',sans-serif;
-  background:#f7f1e7;
-  color:#1f2b25;
-  overflow-x:hidden;
-  line-height:1.65;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+.bg-img.active {
+  opacity: 0.32;
 }
 
-/* =========================
-   ROOT
-========================= */
-:root{
-  --cream:#f7f1e7;
-  --paper:#fcf8f1;
-  --paper2:#f3eadb;
-
-  --ink:#1f2b25;
-  --ink-soft:#51615a;
-
-  --red:#a12b2b;
-  --red-soft:#d76a6a;
-
-  --green:#2f4b3f;
-  --green-soft:#60776b;
-
-  --line:#d8d1c4;
-
-  --shadow:
-    0 10px 30px rgba(25,30,28,.07);
-
-  --radius:26px;
-
-  --max:1280px;
-}
-
-/* =========================
-   SCROLLBAR
-========================= */
-::-webkit-scrollbar{
-  width:10px;
-}
-
-::-webkit-scrollbar-track{
-  background:#efe7d8;
-}
-
-::-webkit-scrollbar-thumb{
-  background:#9d8d75;
-  border-radius:999px;
-}
-
-/* =========================
-   UTIL
-========================= */
-.container{
-  width:100%;
-  max-width:var(--max);
-  margin:auto;
-  padding-inline:22px;
-}
-
-section{
-  position:relative;
-  padding:120px 0;
-}
-
-.section-head{
-  margin-bottom:60px;
-}
-
-.section-sub{
-  color:var(--red);
-  font-size:.88rem;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  margin-bottom:14px;
-  font-weight:700;
-}
-
-.section-title{
-  font-family:'Shippori Mincho',serif;
-  font-size:clamp(2.2rem,5vw,4rem);
-  line-height:1.1;
-  margin-bottom:20px;
-}
-
-.section-text{
-  max-width:760px;
-  color:var(--ink-soft);
-}
-
-/* =========================
-   BACKGROUND DECOR
-========================= */
-.bg-grid{
-  position:fixed;
-  inset:0;
-  z-index:-20;
-  opacity:.05;
-  background-image:
-    linear-gradient(to right, #000 1px, transparent 1px),
-    linear-gradient(to bottom, #000 1px, transparent 1px);
-  background-size:70px 70px;
-}
-
-.bg-wave{
-  position:fixed;
-  inset:0;
-  z-index:-21;
-  opacity:.04;
-  background-image:
-  radial-gradient(circle at center,
-  transparent 55%,
-  #000 56%,
-  transparent 57%);
-  background-size:80px 80px;
-}
-
-/* =========================
-   FLOATING PETALS
-========================= */
-.petals{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:-5;
-  overflow:hidden;
-}
-
-.petal{
-  position:absolute;
-  width:14px;
-  height:14px;
-  background:
-    radial-gradient(circle at 30% 30%,
-    #ffd6de,
-    #f5a7b7);
-  border-radius:
-    70% 0 70% 0;
-  opacity:.55;
-  animation:float linear infinite;
-  will-change:transform;
-}
-
-.petal:nth-child(1){
-  left:10%;
-  animation-duration:16s;
-  animation-delay:-3s;
-}
-
-.petal:nth-child(2){
-  left:25%;
-  width:18px;
-  height:18px;
-  animation-duration:20s;
-}
-
-.petal:nth-child(3){
-  left:45%;
-  animation-duration:15s;
-  animation-delay:-5s;
-}
-
-.petal:nth-child(4){
-  left:62%;
-  width:16px;
-  height:16px;
-  animation-duration:18s;
-}
-
-.petal:nth-child(5){
-  left:78%;
-  animation-duration:22s;
-}
-
-.petal:nth-child(6){
-  left:90%;
-  width:20px;
-  height:20px;
-  animation-duration:19s;
-}
-
-@keyframes float{
-  from{
-    transform:
-      translateY(-10vh)
-      rotate(0deg);
-  }
-
-  to{
-    transform:
-      translateY(110vh)
-      translateX(50px)
-      rotate(360deg);
-  }
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgba(247,241,231,0.3), rgba(247,241,231,0.55));
 }
 
 /* =========================
    NAVBAR
 ========================= */
-.nav-wrap{
-  position:sticky;
-  top:18px;
-
-  width:100%;
-  z-index:1000;
-
-  padding-inline:16px;
-
-  pointer-events:none;
+.nav-wrap { padding: 12px 16px 0; }
+.navbar {
+  max-width: 1220px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 10px 20px;
+  background: rgba(252, 248, 241, 0.95);
+  border: 1px solid #e8dccb;
+  border-radius: 50px;
 }
-
-.navbar{
-  pointer-events:auto;
-
-  max-width:1220px;
-  margin:auto;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-
-  padding:16px 22px;
-
-  border:1px solid rgba(255,255,255,.4);
-
-  background:rgba(252,248,241,.75);
-
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-
-  border-radius:999px;
-
-  box-shadow:
-    0 8px 30px rgba(0,0,0,.06);
+.brand b { font-family: 'Shippori Mincho', serif; font-size: 0.95rem; }
+.brand span { font-size: 0.65rem; color: #6b756f; }
+.nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.nav-links a {
+  text-decoration: none;
+  color: var(--ink);
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: 0.2s;
 }
-
-.brand{
-  display:flex;
-  flex-direction:column;
-}
-
-.brand b{
-  font-family:'Shippori Mincho',serif;
-  font-size:1rem;
-}
-
-.brand span{
-  font-size:.74rem;
-  color:var(--ink-soft);
-}
-
-.nav-links{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.nav-links a{
-  text-decoration:none;
-  color:var(--ink);
-  padding:10px 16px;
-  border-radius:999px;
-  font-size:.92rem;
-  transition:.25s ease;
-}
-
-.nav-links a:hover{
-  background:var(--green);
-  color:#fff;
-}
+.nav-links a:hover { background: var(--green); color: #fff; }
 
 /* =========================
    HERO
 ========================= */
-.hero{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  overflow:hidden;
-  padding-top:140px;
+.hero {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  padding: 50px 0 40px;
 }
 
-.hero-grid{
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  gap:60px;
-  align-items:center;
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 40px;
+  align-items: center;
 }
 
-.hero-left{
-  position:relative;
-  z-index:2;
+.hero-kicker {
+  display: inline-block;
+  padding: 6px 16px;
+  background: #efe5d6;
+  border-radius: 50px;
+  color: var(--green);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
-.hero-kicker{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
+.hero-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: clamp(2.2rem, 7vw, 4.5rem);
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+.hero-title span { color: var(--red); }
 
-  background:#efe5d6;
-  border:1px solid #e1d3bf;
-
-  padding:10px 18px;
-  border-radius:999px;
-
-  font-size:.85rem;
-  color:var(--green);
-  margin-bottom:24px;
+.hero-text {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+  max-width: 500px;
 }
 
-.hero-kicker::before{
-  content:"";
-  width:10px;
-  height:10px;
-  border-radius:999px;
-  background:var(--red);
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.hero-title{
-  font-family:'Shippori Mincho',serif;
-  font-size:clamp(3.2rem,8vw,7rem);
-  line-height:.95;
-  margin-bottom:28px;
+.btn {
+  border: none;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-block;
+  transition: 0.2s;
+}
+.btn-primary { background: var(--green); color: #fff; }
+.btn-primary:hover { background: #1f3a2f; }
+.btn-outline { background: #fff; border: 1px solid #ded2c0; color: var(--ink); }
+.btn-outline:hover { background: #f5ede0; }
+
+/* =========================
+   PROFILE PHOTO + GEAR (FINAL - NO UPLOAD)
+========================= */
+.profile-wrapper {
+  position: relative;
+  max-width: 360px;
+  margin: auto;
 }
 
-.hero-title span{
-  color:var(--red);
+.profile-photo {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #ddd3c3;
+  border: 1px solid rgba(255,255,255,.28);
+  box-shadow: 0 12px 28px rgba(0,0,0,.08), 0 28px 60px rgba(0,0,0,.10);
+  transition: transform 0.45s cubic-bezier(.2,.8,.2,1), box-shadow 0.4s ease;
 }
 
-.hero-text{
-  max-width:640px;
-  font-size:1.08rem;
-  color:var(--ink-soft);
-  margin-bottom:40px;
+/* dark cinematic fade */
+.profile-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(18,24,21,.32) 0%, rgba(18,24,21,.08) 34%, transparent 68%);
 }
 
-.hero-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:16px;
+/* soft light streak */
+.profile-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.16) 48%, transparent 74%);
+  mix-blend-mode: screen;
+  opacity: .65;
 }
 
-.btn{
-  text-decoration:none;
-  border:none;
-  cursor:pointer;
-
-  padding:16px 24px;
-
-  border-radius:999px;
-
-  transition:.25s ease;
-
-  font-weight:700;
+.profile-photo:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 44px rgba(0,0,0,.12), 0 40px 90px rgba(0,0,0,.16);
 }
 
-.btn-primary{
-  background:var(--green);
-  color:#fff;
-  box-shadow:var(--shadow);
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1s ease, filter 0.4s ease;
 }
 
-.btn-primary:hover{
-  transform:translateY(-2px);
+.profile-photo:hover .profile-img {
+  transform: scale(1.045);
+  filter: contrast(1.04) saturate(1.02);
 }
 
-.btn-outline{
-  border:1px solid #d7cfc0;
-  color:var(--ink);
-  background:#fff;
+/* GEAR / KAMON - COOLNESS for desktop+mobile */
+.gear-icon {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+  z-index: 10;
+  animation: floatSoft 4.5s ease-in-out infinite, spinSlow 12s linear infinite;
 }
 
-.btn-outline:hover{
-  background:#f3ecdf;
+/* inner ring */
+.gear-icon::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.gear-icon svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--green);
+  stroke-width: 1.6;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(3deg); }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* =========================
-   HERO RIGHT
+   MOBILE ADAPTATION GEAR
 ========================= */
-.hero-right{
-  position:relative;
-  min-height:640px;
-}
-
-.hero-photo-wrap{
-  position:relative;
-  width:100%;
-  max-width:520px;
-  margin-inline:auto;
-}
-
-.hero-photo{
-  aspect-ratio:4/5;
-  border-radius:38px;
-  overflow:hidden;
-  position:relative;
-  border:1px solid #e6dccf;
-  background:
-    linear-gradient(
-      145deg,
-      #f6efe3,
-      #ece2d0
-    );
-  box-shadow:
-    0 25px 80px rgba(0,0,0,.09);
-}
-
-.hero-photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-.hero-placeholder{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:18px;
-  color:#7f7467;
-}
-
-.hero-placeholder svg{
-  width:90px;
-  opacity:.7;
-}
-
-.circle-kamon{
-  position:absolute;
-  width:180px;
-  height:180px;
-  border-radius:999px;
-  border:1px dashed rgba(47,75,63,.18);
-  top:-30px;
-  right:-30px;
-  animation:spin 18s linear infinite;
-}
-
-.circle-kamon::before,
-.circle-kamon::after{
-  content:"";
-  position:absolute;
-  inset:20px;
-  border-radius:999px;
-  border:1px dashed rgba(161,43,43,.18);
-}
-
-@keyframes spin{
-  to{
-    transform:rotate(360deg);
+@media (max-width: 640px) {
+  .profile-photo { border-radius: 24px; }
+  .gear-icon {
+    top: 12px;
+    right: 12px;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
   }
+  .gear-icon::before { inset: 6px; border-radius: 10px; }
+  .gear-icon svg { width: 26px; height: 26px; }
 }
 
-.torii{
-  position:absolute;
-  left:-60px;
-  bottom:30px;
-  opacity:.12;
-  width:180px;
-}
-
-.mount{
-  position:absolute;
-  right:-50px;
-  bottom:-40px;
-  width:240px;
-  opacity:.12;
+@media (max-width: 480px) {
+  .gear-icon {
+    top: 10px;
+    right: 10px;
+    width: 46px;
+    height: 46px;
+  }
+  .gear-icon svg { width: 22px; height: 22px; }
 }
 
 /* =========================
-   DIVIDER
+   CARDS
 ========================= */
-.brush-divider{
-  position:absolute;
-  left:0;
-  width:100%;
-  bottom:-1px;
-  opacity:.12;
+.about-grid,
+.skills-grid,
+.projects-grid {
+  display: grid;
+  gap: 20px;
+}
+.about-grid { grid-template-columns: repeat(2, 1fr); }
+.skills-grid { grid-template-columns: repeat(3, 1fr); }
+.projects-grid { grid-template-columns: repeat(3, 1fr); }
+.social-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+
+.about-card,
+.skill-card,
+.project-card,
+.timeline-card,
+.social-card {
+  background: rgba(255, 249, 242, 0.92);
+  border: 1px solid #e7dccd;
+  border-radius: var(--radius);
+  padding: 24px;
 }
 
-/* =========================
-   ABOUT
-========================= */
-.about-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
+.about-card h3 { font-family: 'Shippori Mincho', serif; margin-bottom: 12px; font-size: 1.3rem; }
+.about-card p { color: var(--ink-soft); font-size: 0.9rem; }
+
+.about-stat {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+.stat-box {
+  background: #f5ede0;
+  padding: 15px;
+  border-radius: 18px;
+  text-align: center;
+}
+.stat-box h4 { font-family: 'DM Serif Display', serif; color: var(--red); font-size: 1.5rem; }
+.stat-box span { font-size: 0.75rem; color: var(--ink-soft); }
+
+.skill-icon {
+  width: 48px;
+  height: 48px;
+  background: #f5ede0;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.skill-icon svg { width: 28px; height: 28px; stroke: var(--green); }
+.skill-card h3 { margin-bottom: 10px; font-size: 1.1rem; }
+.skill-card p { font-size: 0.85rem; color: var(--ink-soft); }
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.tags span {
+  background: #f5ede0;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.7rem;
 }
 
-.about-card{
-  background:rgba(255,255,255,.6);
-  border:1px solid #ebe2d5;
-  border-radius:var(--radius);
-  padding:34px;
-  box-shadow:var(--shadow);
+.project-thumb {
+  height: 130px;
+  background: linear-gradient(145deg, #e7d6c0, #f5ede0);
+  border-radius: 16px;
+  margin-bottom: 16px;
+}
+.project-content h3 { font-size: 1rem; margin-bottom: 8px; }
+.project-content p { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 12px; }
+.project-link {
+  text-decoration: none;
+  color: var(--green);
+  font-weight: 600;
+  font-size: 0.8rem;
 }
 
-.about-card h3{
-  font-family:'Shippori Mincho',serif;
-  margin-bottom:18px;
-  font-size:1.6rem;
+.timeline { padding-left: 30px; }
+.timeline-item { position: relative; margin-bottom: 30px; }
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -30px;
+  top: 8px;
+  width: 10px;
+  height: 10px;
+  background: var(--red);
+  border-radius: 50%;
+}
+.timeline-item::after {
+  content: "";
+  position: absolute;
+  left: -25px;
+  top: 18px;
+  width: 2px;
+  height: calc(100% - 10px);
+  background: #d8cfbf;
+}
+.timeline-item:last-child::after { display: none; }
+.timeline-card { padding: 0 0 0 16px; background: none; border: none; padding-left: 20px; }
+.timeline-year { color: var(--red); font-weight: 700; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 5px; }
+.timeline-card h3 { font-size: 1rem; margin-bottom: 6px; }
+.timeline-card p { font-size: 0.8rem; color: var(--ink-soft); }
+
+.social-card {
+  text-align: center;
+  text-decoration: none;
+  color: var(--ink);
+  padding: 18px;
+}
+.social-card h3 { font-size: 1rem; margin-top: 10px; margin-bottom: 5px; }
+.social-card p { font-size: 0.7rem; color: var(--ink-soft); }
+
+footer {
+  padding: 50px 0 30px;
+  border-top: 1px solid #ddd3c3;
+}
+.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.footer-brand h3 { font-size: 1rem; margin-bottom: 6px; }
+.footer-brand p { font-size: 0.75rem; color: var(--ink-soft); }
+.footer-links { display: flex; gap: 12px; }
+.footer-links a {
+  background: var(--green);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.8rem;
 }
 
-.about-card p{
-  color:var(--ink-soft);
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
+.reveal.active { opacity: 1; transform: none; }
 
-.about-stat{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
-  margin-top:28px;
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 30px; }
+  .skills-grid, .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  .social-grid { grid-template-columns: repeat(3, 1fr); }
 }
-
-.stat-box{
-  background:#f6efe3;
-  border-radius:24px;
-  padding:24px;
-}
-
-.stat-box h4{
-  font-family:'DM Serif Display',serif;
-  font-size:2.2rem;
-  color:var(--red);
-}
-
-.stat-box span{
-  color:var(--ink-soft);
-  font-size:.92rem;
-}
-
-/* =========================
-   SKILLS
-========================= */
-.skills-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:24px;
-}
-
-.skill-card{
-  background:#fff;
-  border:1px solid #e8dece;
-  border-radius:30px;
-  padding:34px;
-  transition:.25s ease;
-  box-shadow:var(--shadow);
-}
-
-.skill-card:hover{
-  transform:translateY(-6px);
-}
-
-.skill-icon{
-  width:64px;
-  height:64px;
-  border-radius:20px;
-  display:grid;
-  place-items:center;
-  margin-bottom:24px;
-  background:#f4ecdf;
-}
-
-.skill-icon svg{
-  width:34px;
-  height:34px;
-}
-
-.skill-card h3{
-  margin-bottom:14px;
-  font-size:1.3rem;
-}
-
-.skill-card p{
-  color:var(--ink-soft);
-}
-
-.tags{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:24px;
-}
-
-.tags span{
-  padding:8px 14px;
-  border-radius:999px;
-  background:#f5efe4;
-  font-size:.84rem;
-}
-
-/* =========================
-   PROJECTS
-========================= */
-.projects-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:24px;
-}
-
-.project-card{
-  overflow:hidden;
-  background:#fff;
-  border-radius:34px;
-  border:1px solid #e7ddcf;
-  box-shadow:var(--shadow);
-}
-
-.project-thumb{
-  aspect-ratio:16/10;
-  background:
-    linear-gradient(
-      145deg,
-      #e7d6c0,
-      #f5ede0
-    );
-  position:relative;
-  overflow:hidden;
-}
-
-.project-thumb::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at top right,
-    rgba(161,43,43,.18),
-    transparent 50%);
-}
-
-.project-content{
-  padding:28px;
-}
-
-.project-content h3{
-  margin-bottom:12px;
-}
-
-.project-content p{
-  color:var(--ink-soft);
-  margin-bottom:20px;
-}
-
-.project-link{
-  text-decoration:none;
-  color:var(--green);
-  font-weight:700;
-}
-
-/* =========================
-   TIMELINE
-========================= */
-.timeline{
-  position:relative;
-  padding-left:40px;
-}
-
-.timeline::before{
-  content:"";
-  position:absolute;
-  left:8px;
-  top:0;
-  width:2px;
-  height:100%;
-  background:#d9cfbf;
-}
-
-.timeline-item{
-  position:relative;
-  margin-bottom:40px;
-}
-
-.timeline-dot{
-  position:absolute;
-  left:-40px;
-  top:8px;
-  width:18px;
-  height:18px;
-  border-radius:999px;
-  background:var(--red);
-  border:4px solid #f7f1e7;
-}
-
-.timeline-card{
-  background:#fff;
-  border-radius:28px;
-  border:1px solid #eadfd0;
-  padding:28px;
-  box-shadow:var(--shadow);
-}
-
-.timeline-year{
-  color:var(--red);
-  font-weight:700;
-  margin-bottom:10px;
-}
-
-/* =========================
-   SOCIALS
-========================= */
-.social-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:18px;
-}
-
-.social-card{
-  text-decoration:none;
-  color:var(--ink);
-  background:#fff;
-  border:1px solid #eadfd0;
-  border-radius:26px;
-  padding:28px;
-  transition:.25s ease;
-  box-shadow:var(--shadow);
-}
-
-.social-card:hover{
-  transform:translateY(-5px);
-  background:#f7f0e4;
-}
-
-.social-card h3{
-  margin-top:16px;
-  margin-bottom:10px;
-}
-
-.social-card p{
-  color:var(--ink-soft);
-  font-size:.92rem;
-}
-
-/* =========================
-   FOOTER
-========================= */
-footer{
-  position:relative;
-  padding:80px 0 50px;
-  border-top:1px solid #ddd3c3;
-}
-
-.footer-grid{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-  flex-wrap:wrap;
-}
-
-.footer-brand h3{
-  font-family:'Shippori Mincho',serif;
-  margin-bottom:10px;
-}
-
-.footer-brand p{
-  color:var(--ink-soft);
-}
-
-.footer-links{
-  display:flex;
-  gap:16px;
-  flex-wrap:wrap;
-}
-
-.footer-links a{
-  text-decoration:none;
-  color:#fff;
-  background:var(--green);
-  padding:14px 22px;
-  border-radius:999px;
-  transition:.25s ease;
-}
-
-.footer-links a:hover{
-  transform:translateY(-2px);
-}
-
-/* =========================
-   REVEAL
-========================= */
-.reveal{
-  opacity:0;
-  transform:translateY(40px);
-  transition:
-    opacity .8s ease,
-    transform .8s ease;
-}
-
-.reveal.active{
-  opacity:1;
-  transform:none;
-}
-
-/* =========================
-   MOBILE
-========================= */
-@media(max-width:1100px){
-
-  .hero-grid,
-  .about-grid{
-    grid-template-columns:1fr;
+@media (max-width: 700px) {
+  .navbar { flex-direction: column; align-items: stretch; border-radius: 28px; }
+  .nav-links { justify-content: center; }
+  section { padding: 50px 0; }
+  .about-grid, .skills-grid, .projects-grid, .social-grid, .about-stat {
+    grid-template-columns: 1fr;
   }
-
-  .projects-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .skills-grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .social-grid{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .hero-right{
-    min-height:auto;
-  }
-
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: 2rem; }
+  .btn { padding: 10px 18px; font-size: 0.8rem; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { text-align: center; }
 }
 
-@media(max-width:760px){
-
-  section{
-    padding:90px 0;
-  }
-
-  .navbar{
-    border-radius:30px;
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .nav-links{
-    width:100%;
-  }
-
-  .nav-links a{
-    flex:1;
-    text-align:center;
-  }
-
-  .hero-title{
-    font-size:3.5rem;
-  }
-
-  .skills-grid,
-  .projects-grid,
-  .social-grid{
-    grid-template-columns:1fr;
-  }
-
-  .about-stat{
-    grid-template-columns:1fr;
-  }
-
-  .hero{
-    padding-top:180px;
-  }
-
-}
-
-@media(prefers-reduced-motion:reduce){
-
-  *,
-  *::before,
-  *::after{
-    animation:none !important;
-    transition:none !important;
-    scroll-behavior:auto !important;
-  }
-
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
 }
 </style>
 </head>
-
 <body>
 
-<div class="bg-grid"></div>
-<div class="bg-wave"></div>
-
-<!-- PETALS -->
-<div class="petals">
-  <span class="petal"></span>
-  <span class="petal"></span>
-  <span class="petal"></span>
-  <span class="petal"></span>
-  <span class="petal"></span>
-  <span class="petal"></span>
+<!-- BACKGROUND CHANGE SYSTEM -->
+<div class="bg-container">
+  <img class="bg-img active" id="bgHero" src="/p/prof.jpeg" alt="Profesor Khairul Amri - background hero">
+  <img class="bg-img" id="bgAbout" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format" alt="Professional atmosphere background">
+  <img class="bg-img" id="bgExp" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format" alt="Collaborative team background">
 </div>
+<div class="bg-overlay"></div>
 
 <!-- NAVBAR -->
 <div class="nav-wrap">
   <nav class="navbar">
-
-    <div class="brand">
-      <b>Berkah Perdana</b>
-      <span>Amri Dev Portfolio</span>
-    </div>
-
+    <div class="brand"><b>Berkah Perdana</b><span>Amri Dev</span></div>
     <div class="nav-links">
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
@@ -957,547 +523,101 @@ footer{
       <a href="#timeline">Experience</a>
       <a href="#contact">Contact</a>
     </div>
-
   </nav>
 </div>
 
-<!-- HERO -->
+<!-- HERO + PROFILE + GEAR -->
 <section class="hero">
-
   <div class="container hero-grid">
-
-    <!-- LEFT -->
     <div class="hero-left reveal">
-
-      <div class="hero-kicker">
-        Japan Shibui Portfolio
-      </div>
-
-      <h1 class="hero-title">
-        Berkah <span>Perdana</span><br>
-        Amri Dev
-      </h1>
-
-      <p class="hero-text">
-        Creative web developer focused on elegant frontend architecture,
-        lightweight interface systems, aesthetic layouts,
-        and fast user experiences using HTML, CSS and JavaScript.
-      </p>
-
+      <div class="hero-kicker">dev Portfolio</div>
+      <h1 class="hero-title">Berkah <span>Perdana</span><br>Amri Dev</h1>
+      <p class="hero-text">Web developer focused on clean frontend architecture, responsive layouts, and fast user experiences.</p>
       <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary">
-          Explore Projects
-        </a>
-
-        <a href="#contact" class="btn btn-outline">
-          Contact Me
-        </a>
+        <a href="#projects" class="btn btn-primary">Explore Projects</a>
+        <a href="#contact" class="btn btn-outline">Contact Me</a>
       </div>
-
     </div>
-
-    <!-- RIGHT -->
     <div class="hero-right reveal">
-
-      <div class="hero-photo-wrap">
-
-        <div class="circle-kamon"></div>
-
-        <div class="hero-photo">
-
-          <!-- CHANGE LATER -->
-          <!-- <img src="img/profile.jpg" alt="Profile"> -->
-
-          <div class="hero-placeholder">
-
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-              <circle cx="12" cy="8" r="4"></circle>
-              <path d="M4 20c1.8-4 5-6 8-6s6.2 2 8 6"></path>
-            </svg>
-
-            <div>
-              Upload Your Photo
-            </div>
-
-          </div>
-
+      <div class="profile-wrapper">
+        <!-- GEAR - cool floating + spinning emblem -->
+        <div class="gear-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 1v3m0 16v3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M1 12h3m16 0h3M4.22 19.78l2.12-2.12m11.32-11.32l2.12-2.12"></path>
+          </svg>
         </div>
-
-        <!-- TORII -->
-        <svg class="torii" viewBox="0 0 200 220" fill="currentColor">
-          <path d="M20 35h160v15H20zM40 55h120v12H40zM55 65h15v130H55zM130 65h15v130h-15zM35 180h35v15H35zM130 180h35v15h-35z"/>
-        </svg>
-
-        <!-- MOUNT -->
-        <svg class="mount" viewBox="0 0 300 160" fill="currentColor">
-          <path d="M0 150L90 50l25 35 35-65 60 130H0z"/>
-        </svg>
-
+        <div class="profile-photo">
+          <img class="profile-img" id="profileImg" src="/p/logo.jpg" alt="Profile photo of Amri Ismail - Berkah Perdana" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
       </div>
-
     </div>
-
   </div>
-
-  <!-- BRUSH DIVIDER -->
-  <svg class="brush-divider" viewBox="0 0 1440 120" preserveAspectRatio="none">
-    <path fill="#d9c9b3"
-      d="M0,64L60,58.7C120,53,240,43,360,58.7C480,75,600,117,720,117.3C840,117,960,75,1080,58.7C1200,43,1320,53,1380,58.7L1440,64L1440,120L0,120Z">
-    </path>
-  </svg>
-
 </section>
 
 <!-- ABOUT -->
-<section id="about">
-
-  <div class="container">
-
-    <div class="section-head reveal">
-      <div class="section-sub">About</div>
-
-      <h2 class="section-title">
-        Refined Digital Craft
-      </h2>
-
-      <p class="section-text">
-        Combining modern frontend development with clean visual hierarchy,
-        elegant interaction systems, and lightweight performance-focused architecture.
-      </p>
-    </div>
-
-    <div class="about-grid">
-
-      <div class="about-card reveal">
-        <h3>Personality & Vision</h3>
-
-        <p>
-          I build interfaces inspired by clarity, balance,
-          and immersive visual storytelling. My workflow focuses on clean HTML structure,
-          scalable CSS systems, modern responsive layouts,
-          and efficient JavaScript interactions without unnecessary bloat.
-        </p>
-
-        <div class="about-stat">
-
-          <div class="stat-box">
-            <h4>Fast</h4>
-            <span>Optimized UI Architecture</span>
-          </div>
-
-          <div class="stat-box">
-            <h4>Clean</h4>
-            <span>Structured Frontend System</span>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="about-card reveal">
-        <h3>Design Philosophy</h3>
-
-        <p>
-          Inspired by Japan Shibui aesthetics:
-          understated elegance, restrained decoration,
-          natural color harmony, and subtle sophistication.
-        </p>
-
-        <div class="about-stat">
-
-          <div class="stat-box">
-            <h4>HTML</h4>
-            <span>Semantic Structure</span>
-          </div>
-
-          <div class="stat-box">
-            <h4>CSS</h4>
-            <span>Modern Responsive UI</span>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
+<section id="about"><div class="container"><div class="section-head reveal"><div class="section-sub">About</div><h2 class="section-title">Refined Digital Craft</h2><p class="section-text">Modern frontend development with clean visual hierarchy.</p></div><div class="about-grid"><div class="about-card reveal"><h3>Personality & Vision</h3><p>Clean HTML structure, scalable CSS, modern responsive layouts.</p><div class="about-stat"><div class="stat-box"><h4>Fast</h4><span>Optimized</span></div><div class="stat-box"><h4>Clean</h4><span>Structured</span></div></div></div><div class="about-card reveal"><h3>Design Philosophy</h3><p>Understated elegance, natural color harmony.</p><div class="about-stat"><div class="stat-box"><h4>HTML</h4><span>Semantic</span></div><div class="stat-box"><h4>CSS</h4><span>Modern</span></div></div></div></div></div></section>
 
 <!-- SKILLS -->
-<section id="skills">
-
-  <div class="container">
-
-    <div class="section-head reveal">
-      <div class="section-sub">Skills</div>
-
-      <h2 class="section-title">
-        Frontend Development Stack
-      </h2>
-    </div>
-
-    <div class="skills-grid">
-
-      <div class="skill-card reveal">
-
-        <div class="skill-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-            <path d="M4 4h16v16H4z"></path>
-            <path d="M8 8h8v8H8z"></path>
-          </svg>
-        </div>
-
-        <h3>HTML Structure</h3>
-
-        <p>
-          Semantic layout systems, SEO hierarchy,
-          accessibility-focused markup,
-          scalable document architecture.
-        </p>
-
-        <div class="tags">
-          <span>SEO</span>
-          <span>Schema</span>
-          <span>Semantic</span>
-        </div>
-
-      </div>
-
-      <div class="skill-card reveal">
-
-        <div class="skill-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-            <path d="M4 6h16"></path>
-            <path d="M4 12h16"></path>
-            <path d="M4 18h10"></path>
-          </svg>
-        </div>
-
-        <h3>CSS Interface</h3>
-
-        <p>
-          Responsive systems, adaptive UI,
-          elegant spacing, advanced visual hierarchy,
-          modern animation optimization.
-        </p>
-
-        <div class="tags">
-          <span>Responsive</span>
-          <span>Animation</span>
-          <span>UI System</span>
-        </div>
-
-      </div>
-
-      <div class="skill-card reveal">
-
-        <div class="skill-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-            <path d="M8 8l-4 4 4 4"></path>
-            <path d="M16 8l4 4-4 4"></path>
-          </svg>
-        </div>
-
-        <h3>JavaScript Logic</h3>
-
-        <p>
-          Lightweight interactions,
-          smooth UX logic,
-          efficient DOM management,
-          optimized frontend behaviors.
-        </p>
-
-        <div class="tags">
-          <span>DOM</span>
-          <span>UX</span>
-          <span>Performance</span>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
+<section id="skills"><div class="container"><div class="section-head reveal"><div class="section-sub">Skills</div><h2 class="section-title">Frontend Stack</h2></div><div class="skills-grid"><div class="skill-card reveal"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16v16H4z"></path><path d="M8 8h8v8H8z"></path></svg></div><h3>HTML</h3><p>Semantic layout, SEO hierarchy.</p><div class="tags"><span>SEO</span><span>Semantic</span></div></div><div class="skill-card reveal"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h10"></path></svg></div><h3>CSS</h3><p>Responsive systems, adaptive UI.</p><div class="tags"><span>Responsive</span><span>Flex/Grid</span></div></div><div class="skill-card reveal"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 8l-4 4 4 4"></path><path d="M16 8l4 4-4 4"></path></svg></div><h3>JavaScript</h3><p>Lightweight interactions.</p><div class="tags"><span>DOM</span><span>Performance</span></div></div></div></div></section>
 
 <!-- PROJECTS -->
-<section id="projects">
-
-  <div class="container">
-
-    <div class="section-head reveal">
-      <div class="section-sub">Projects</div>
-
-      <h2 class="section-title">
-        Selected Works
-      </h2>
-    </div>
-
-    <div class="projects-grid">
-
-      <div class="project-card reveal">
-
-        <div class="project-thumb"></div>
-
-        <div class="project-content">
-          <h3>Modern POS Dashboard</h3>
-
-          <p>
-            Lightweight cashier interface with responsive architecture and realtime UI concept.
-          </p>
-
-          <a href="#" class="project-link">
-            View Project →
-          </a>
-        </div>
-
-      </div>
-
-      <div class="project-card reveal">
-
-        <div class="project-thumb"></div>
-
-        <div class="project-content">
-          <h3>Shibui Portfolio System</h3>
-
-          <p>
-            Elegant frontend portfolio concept inspired by Japanese modern aesthetics.
-          </p>
-
-          <a href="#" class="project-link">
-            View Project →
-          </a>
-        </div>
-
-      </div>
-
-      <div class="project-card reveal">
-
-        <div class="project-thumb"></div>
-
-        <div class="project-content">
-          <h3>Blogspot UI Enhancement</h3>
-
-          <p>
-            Custom layout systems, optimized mobile rendering, and advanced CSS integration.
-          </p>
-
-          <a href="#" class="project-link">
-            View Project →
-          </a>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
+<section id="projects"><div class="container"><div class="section-head reveal"><div class="section-sub">Projects</div><h2 class="section-title">Selected Works</h2></div><div class="projects-grid"><div class="project-card reveal"><div class="project-thumb"></div><div class="project-content"><h3>POS Dashboard</h3><p>Lightweight cashier interface.</p><a href="#" class="project-link">View →</a></div></div><div class="project-card reveal"><div class="project-thumb"></div><div class="project-content"><h3>Portfolio System</h3><p>Elegant frontend portfolio.</p><a href="#" class="project-link">View →</a></div></div><div class="project-card reveal"><div class="project-thumb"></div><div class="project-content"><h3>Blogspot UI</h3><p>Custom layouts.</p><a href="#" class="project-link">View →</a></div></div></div></div></section>
 
 <!-- TIMELINE -->
-<section id="timeline">
-
-  <div class="container">
-
-    <div class="section-head reveal">
-      <div class="section-sub">Experience</div>
-
-      <h2 class="section-title">
-        Development Journey
-      </h2>
-    </div>
-
-    <div class="timeline">
-
-      <div class="timeline-item reveal">
-
-        <div class="timeline-dot"></div>
-
-        <div class="timeline-card">
-
-          <div class="timeline-year">
-            2023 — Present
-          </div>
-
-          <h3>Frontend Web Development</h3>
-
-          <p>
-            Building modern UI systems using HTML, CSS and JavaScript with responsive-first workflow.
-          </p>
-
-        </div>
-
-      </div>
-
-      <div class="timeline-item reveal">
-
-        <div class="timeline-dot"></div>
-
-        <div class="timeline-card">
-
-          <div class="timeline-year">
-            UI Architecture
-          </div>
-
-          <h3>Performance & Design Focus</h3>
-
-          <p>
-            Creating lightweight interfaces optimized for mobile rendering and smooth interaction.
-          </p>
-
-        </div>
-
-      </div>
-
-      <div class="timeline-item reveal">
-
-        <div class="timeline-dot"></div>
-
-        <div class="timeline-card">
-
-          <div class="timeline-year">
-            Creative System
-          </div>
-
-          <h3>Japan Shibui Direction</h3>
-
-          <p>
-            Combining subtle Japanese visual inspiration with contemporary frontend experience.
-          </p>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
+<section id="timeline"><div class="container"><div class="section-head reveal"><div class="section-sub">Experience</div><h2 class="section-title">Journey</h2></div><div class="timeline"><div class="timeline-item reveal"><div class="timeline-card"><div class="timeline-year">2023 — Present</div><h3>Frontend Development</h3><p>Modern UI systems.</p></div></div><div class="timeline-item reveal"><div class="timeline-card"><div class="timeline-year">UI Architecture</div><h3>Performance Focus</h3><p>Lightweight interfaces.</p></div></div></div></div></section>
 
 <!-- CONTACT -->
-<section id="contact">
+<section id="contact"><div class="container"><div class="section-head reveal"><div class="section-sub">Contact</div><h2 class="section-title">Connect</h2></div><div class="social-grid"><a href="#" class="social-card reveal"><h3>GitHub</h3><p>Open source</p></a><a href="#" class="social-card reveal"><h3>Instagram</h3><p>Updates</p></a><a href="#" class="social-card reveal"><h3>LinkedIn</h3><p>Network</p></a><a href="#" class="social-card reveal"><h3>Twitter</h3><p>Thoughts</p></a><a href="#" class="social-card reveal"><h3>WhatsApp</h3><p>Direct chat</p></a></div></div></section>
 
-  <div class="container">
-
-    <div class="section-head reveal">
-
-      <div class="section-sub">
-        Contact
-      </div>
-
-      <h2 class="section-title">
-        Connect & Collaborate
-      </h2>
-
-    </div>
-
-    <div class="social-grid">
-
-      <a href="#" class="social-card reveal">
-        <h3>GitHub</h3>
-        <p>Open source & repositories</p>
-      </a>
-
-      <a href="#" class="social-card reveal">
-        <h3>Instagram</h3>
-        <p>Visual updates & portfolio</p>
-      </a>
-
-      <a href="#" class="social-card reveal">
-        <h3>LinkedIn</h3>
-        <p>Professional network</p>
-      </a>
-
-      <a href="#" class="social-card reveal">
-        <h3>Twitter / X</h3>
-        <p>Development thoughts</p>
-      </a>
-
-      <a href="#" class="social-card reveal">
-        <h3>WhatsApp</h3>
-        <p>Direct communication</p>
-      </a>
-
-    </div>
-
-  </div>
-
-</section>
-
-<!-- FOOTER -->
-<footer>
-
-  <div class="container footer-grid">
-
-    <div class="footer-brand">
-      <h3>Berkah Perdana • Amri Dev</h3>
-
-      <p>
-        Crafted with refined frontend architecture and Japan Shibui aesthetics.
-      </p>
-    </div>
-
-    <div class="footer-links">
-      <a href="Login/index.html">
-        Team
-      </a>
-
-      <a href="DevLogin/index.html">
-        Owner
-      </a>
-    </div>
-
-  </div>
-
-</footer>
+<footer><div class="container footer-grid"><div class="footer-brand"><h3>Berkah Perdana • Amri Dev</h3><p>Clean frontend architecture</p></div><div class="footer-links"><a href="#">Team</a><a href="#">Owner</a></div></div></footer>
 
 <script>
-/* =========================================
-   REVEAL ON SCROLL
-========================================= */
-
-const revealItems = document.querySelectorAll('.reveal');
-
-const revealObserver = new IntersectionObserver((entries)=>{
-
-  entries.forEach(entry=>{
-
-    if(entry.isIntersecting){
-      entry.target.classList.add('active');
-    }
-
+// REVEAL ON SCROLL
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('active');
   });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
 
-},{
-  threshold:.14
-});
+// BACKGROUND CHANGE BASED ON SCROLL
+const bgHero = document.getElementById('bgHero');
+const bgAbout = document.getElementById('bgAbout');
+const bgExp = document.getElementById('bgExp');
+const aboutSection = document.querySelector('#about');
+const expSection = document.querySelector('#timeline');
 
-revealItems.forEach(item=>{
-  revealObserver.observe(item);
-});
+function setActiveBg(target) {
+  [bgHero, bgAbout, bgExp].forEach(img => img.classList.remove('active'));
+  if (target) target.classList.add('active');
+}
 
-/* =========================================
-   NAV ACTIVE SHADOW
-========================================= */
+function updateBackground() {
+  const scrollY = window.scrollY;
+  const aboutTop = aboutSection?.offsetTop - 200 || 0;
+  const expTop = expSection?.offsetTop - 200 || 0;
+  
+  if (scrollY >= expTop) setActiveBg(bgExp);
+  else if (scrollY >= aboutTop) setActiveBg(bgAbout);
+  else setActiveBg(bgHero);
+}
 
-const navbar = document.querySelector('.navbar');
-
-window.addEventListener('scroll',()=>{
-
-  if(window.scrollY > 40){
-    navbar.style.boxShadow =
-      '0 14px 40px rgba(0,0,0,.09)';
-  }else{
-    navbar.style.boxShadow =
-      '0 8px 30px rgba(0,0,0,.06)';
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => { updateBackground(); ticking = false; });
+    ticking = true;
   }
+}, { passive: true });
+updateBackground();
 
-},{ passive:true });
-
+// NAVBAR SHADOW
+const navbar = document.querySelector('.navbar');
+window.addEventListener('scroll', () => {
+  navbar.style.boxShadow = window.scrollY > 30 ? '0 4px 12px rgba(0,0,0,0.08)' : 'none';
+}, { passive: true });
 </script>
-
 </body>
 </html>
