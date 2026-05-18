@@ -245,17 +245,23 @@ section{
    NAVBAR
 ========================= */
 .nav-wrap{
-  position:fixed;
+  position:sticky;
   top:18px;
-  left:0;
+
   width:100%;
   z-index:1000;
+
   padding-inline:16px;
+
+  pointer-events:none;
 }
 
 .navbar{
+  pointer-events:auto;
+
   max-width:1220px;
   margin:auto;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -265,10 +271,10 @@ section{
 
   border:1px solid rgba(255,255,255,.4);
 
-  background:
-    rgba(252,248,241,.75);
+  background:rgba(252,248,241,.75);
 
   backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
 
   border-radius:999px;
 
