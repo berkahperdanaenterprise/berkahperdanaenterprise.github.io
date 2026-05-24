@@ -1,598 +1,477 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms-BN" class="light">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Berkah Perdana | Amri Dev</title>
-<meta name="description" content="Amri Dev - Web Developer Portfolio" />
-<meta name="theme-color" content="#f7f1e7" />
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Shippori+Mincho:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  
+  
+  
+  <!-- Notifikasi Maintenance - taruh di dalam <body> paling atas -->
+<div id="maintenance-notice" class="mnt-notice">
+  <div class="mnt-container">
+    <span class="mnt-icon">🚧</span>
+    <div class="mnt-text">
+      <strong>Website dalam penyelenggaraan.</strong> Segera hadir sepenuhnya!<br>
+      <small>Semua perkhidmatan & tenaga kerja kami tetap beroperasi seperti biasa.</small>
+    </div>
+    <button class="mnt-close" id="close-notice" aria-label="Tutup notis">✕</button>
+  </div>
+</div>
+
 <style>
-/* =========================
-   LIGHTWEIGHT + BACKGROUND CHANGE
-   RAM 1GB OPTIMIZED
-========================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Zen Kaku Gothic New', sans-serif;
-  background: #f7f1e7;
-  color: #1f2b25;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-:root {
-  --cream: #f7f1e7;
-  --ink: #1f2b25;
-  --ink-soft: #55655e;
-  --red: #a12b2b;
-  --green: #2f4b3f;
-  --radius: 24px;
-  --max: 1280px;
-}
-
-/* Simple scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #efe7d8; }
-::-webkit-scrollbar-thumb { background: #b8a88a; border-radius: 10px; }
-
-.container {
-  width: 100%;
-  max-width: var(--max);
-  margin: auto;
-  padding-inline: 20px;
-}
-
-section {
-  padding: 70px 0;
-  scroll-margin-top: 80px;
-}
-
-.section-head { margin-bottom: 40px; }
-.section-sub { color: var(--red); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 10px; }
-.section-title { font-family: 'Shippori Mincho', serif; font-size: clamp(1.8rem, 6vw, 3rem); line-height: 1.15; margin-bottom: 15px; }
-.section-text { color: var(--ink-soft); max-width: 650px; }
-
-/* =========================
-   BACKGROUND IMAGE SYSTEM - RINGAN
-========================= */
-.bg-container {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  overflow: hidden;
-  background: #f7f1e7;
-}
-
-.bg-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  filter: brightness(0.98) contrast(1.05);
-}
-
-.bg-img.active {
-  opacity: 0.32;
-}
-
-.bg-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(to bottom, rgba(247,241,231,0.3), rgba(247,241,231,0.55));
-}
-
-/* =========================
-   NAVBAR
-========================= */
-.nav-wrap { padding: 12px 16px 0; }
-.navbar {
-  max-width: 1220px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  padding: 10px 20px;
-  background: rgba(252, 248, 241, 0.95);
-  border: 1px solid #e8dccb;
-  border-radius: 50px;
-}
-.brand b { font-family: 'Shippori Mincho', serif; font-size: 0.95rem; }
-.brand span { font-size: 0.65rem; color: #6b756f; }
-.nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
-.nav-links a {
-  text-decoration: none;
-  color: var(--ink);
-  padding: 6px 14px;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: 0.2s;
-}
-.nav-links a:hover { background: var(--green); color: #fff; }
-
-/* =========================
-   HERO
-========================= */
-.hero {
-  min-height: 85vh;
-  display: flex;
-  align-items: center;
-  padding: 50px 0 40px;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 0.9fr;
-  gap: 40px;
-  align-items: center;
-}
-
-.hero-kicker {
-  display: inline-block;
-  padding: 6px 16px;
-  background: #efe5d6;
-  border-radius: 50px;
-  color: var(--green);
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.hero-title {
-  font-family: 'Shippori Mincho', serif;
-  font-size: clamp(2.2rem, 7vw, 4.5rem);
-  line-height: 1.05;
-  margin-bottom: 20px;
-}
-.hero-title span { color: var(--red); }
-
-.hero-text {
-  color: var(--ink-soft);
-  font-size: 0.95rem;
-  margin-bottom: 30px;
-  max-width: 500px;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.btn {
-  border: none;
-  text-decoration: none;
-  padding: 12px 24px;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: inline-block;
-  transition: 0.2s;
-}
-.btn-primary { background: var(--green); color: #fff; }
-.btn-primary:hover { background: #1f3a2f; }
-.btn-outline { background: #fff; border: 1px solid #ded2c0; color: var(--ink); }
-.btn-outline:hover { background: #f5ede0; }
-
-/* =========================
-   PROFILE PHOTO - BULAT + SPIN BACKGROUND
-========================= */
-.profile-wrapper {
-  position: relative;
-  max-width: 320px;
-  margin: auto;
-}
-
-/* Spin background (logo.png berputar di belakang foto) */
-.spin-bg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 110%;
-  height: 110%;
-  transform: translate(-50%, -50%);
-  background-image: url('/p/logo.png');  /* Ganti dengan path logo Anda */
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  animation: spinSlow 8s linear infinite;
-  opacity: 0.25;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Profile photo - BULAT sempurna, tidak merusak gambar */
-.profile-photo {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  width: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #ddd3c3;
-  border: 2px solid rgba(255,255,255,0.4);
-  box-shadow: 0 12px 28px rgba(0,0,0,.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  z-index: 2;
-}
-
-.profile-photo:hover {
-  transform: scale(1.02);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-}
-
-.profile-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;  /* gambar memenuhi lingkaran tanpa distorsi, sedikit crop natural */
-  display: block;
-  border-radius: inherit;
-}
-
-/* Gear icon tetap di sudut kanan atas (diatas foto) */
-.gear-icon {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.3);
-  z-index: 10;
-  animation: floatSoft 4.5s ease-in-out infinite;
-  pointer-events: none;
-}
-.gear-icon svg {
-  width: 28px;
-  height: 28px;
-  stroke: white;
-  stroke-width: 1.5;
-  opacity: 0.9;
-}
-
-/* Animasi */
-@keyframes spinSlow {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-@keyframes floatSoft {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-/* Responsive: ukuran gear lebih kecil di mobile */
-@media (max-width: 640px) {
-  .gear-icon { width: 40px; height: 40px; top: 8px; right: 8px; }
-  .gear-icon svg { width: 22px; height: 22px; }
-  .profile-wrapper { max-width: 260px; }
-}
-@media (max-width: 480px) {
-  .gear-icon { width: 36px; height: 36px; }
-  .gear-icon svg { width: 20px; height: 20px; }
-}
-
-/* =========================
-   CARDS (tidak berubah)
-========================= */
-.about-grid,
-.skills-grid,
-.projects-grid {
-  display: grid;
-  gap: 20px;
-}
-.about-grid { grid-template-columns: repeat(2, 1fr); }
-.skills-grid { grid-template-columns: repeat(3, 1fr); }
-.projects-grid { grid-template-columns: repeat(3, 1fr); }
-.social-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
-
-.about-card,
-.skill-card,
-.project-card,
-.timeline-card,
-.social-card {
-  background: rgba(255, 249, 242, 0.92);
-  border: 1px solid #e7dccd;
-  border-radius: var(--radius);
-  padding: 24px;
-}
-
-.about-card h3 { font-family: 'Shippori Mincho', serif; margin-bottom: 12px; font-size: 1.3rem; }
-.about-card p { color: var(--ink-soft); font-size: 0.9rem; }
-
-.about-stat {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 20px;
-}
-.stat-box {
-  background: #f5ede0;
-  padding: 15px;
-  border-radius: 18px;
-  text-align: center;
-}
-.stat-box h4 { font-family: 'DM Serif Display', serif; color: var(--red); font-size: 1.5rem; }
-.stat-box span { font-size: 0.75rem; color: var(--ink-soft); }
-
-.skill-icon {
-  width: 48px;
-  height: 48px;
-  background: #f5ede0;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-.skill-icon svg { width: 28px; height: 28px; stroke: var(--green); }
-.skill-card h3 { margin-bottom: 10px; font-size: 1.1rem; }
-.skill-card p { font-size: 0.85rem; color: var(--ink-soft); }
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
-}
-.tags span {
-  background: #f5ede0;
-  padding: 4px 12px;
-  border-radius: 50px;
-  font-size: 0.7rem;
-}
-
-.project-thumb {
-  height: 130px;
-  background: linear-gradient(145deg, #e7d6c0, #f5ede0);
-  border-radius: 16px;
-  margin-bottom: 16px;
-}
-.project-content h3 { font-size: 1rem; margin-bottom: 8px; }
-.project-content p { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 12px; }
-.project-link {
-  text-decoration: none;
-  color: var(--green);
-  font-weight: 600;
-  font-size: 0.8rem;
-}
-
-.timeline { padding-left: 30px; }
-.timeline-item { position: relative; margin-bottom: 30px; }
-.timeline-item::before {
-  content: "";
-  position: absolute;
-  left: -30px;
-  top: 8px;
-  width: 10px;
-  height: 10px;
-  background: var(--red);
-  border-radius: 50%;
-}
-.timeline-item::after {
-  content: "";
-  position: absolute;
-  left: -25px;
-  top: 18px;
-  width: 2px;
-  height: calc(100% - 10px);
-  background: #d8cfbf;
-}
-.timeline-item:last-child::after { display: none; }
-.timeline-card { padding: 0 0 0 16px; background: none; border: none; padding-left: 20px; }
-.timeline-year { color: var(--red); font-weight: 700; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 5px; }
-.timeline-card h3 { font-size: 1rem; margin-bottom: 6px; }
-.timeline-card p { font-size: 0.8rem; color: var(--ink-soft); }
-
-.social-card {
-  text-align: center;
-  text-decoration: none;
-  color: var(--ink);
-  padding: 18px;
-}
-.social-card h3 { font-size: 1rem; margin-top: 10px; margin-bottom: 5px; }
-.social-card p { font-size: 0.7rem; color: var(--ink-soft); }
-
-footer {
-  padding: 50px 0 30px;
-  border-top: 1px solid #ddd3c3;
-}
-.footer-grid {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-.footer-brand h3 { font-size: 1rem; margin-bottom: 6px; }
-.footer-brand p { font-size: 0.75rem; color: var(--ink-soft); }
-.footer-links { display: flex; gap: 12px; }
-.footer-links a {
-  background: var(--green);
-  color: #fff;
-  padding: 8px 20px;
-  border-radius: 50px;
-  text-decoration: none;
-  font-size: 0.8rem;
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-.reveal.active { opacity: 1; transform: none; }
-
-/* Responsive */
-@media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 30px; }
-  .skills-grid, .projects-grid { grid-template-columns: repeat(2, 1fr); }
-  .social-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 700px) {
-  .navbar { flex-direction: column; align-items: stretch; border-radius: 28px; }
-  .nav-links { justify-content: center; }
-  section { padding: 50px 0; }
-  .about-grid, .skills-grid, .projects-grid, .social-grid, .about-stat {
-    grid-template-columns: 1fr;
+  .mnt-notice {
+    background: rgba(212, 175, 55, 0.18);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.6);
+    color: #0A2F1F;
+    font-family: 'Inter', system-ui, sans-serif;
+    position: relative;
+    z-index: 1000;
+    animation: slideDown 0.5s ease;
   }
-}
-@media (max-width: 480px) {
-  .hero-title { font-size: 2rem; }
-  .btn { padding: 10px 18px; font-size: 0.8rem; }
-  .hero-actions { flex-direction: column; }
-  .hero-actions .btn { text-align: center; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; }
-  .reveal { opacity: 1; transform: none; }
-}
+  body.dark .mnt-notice {
+    background: rgba(30,30,30,0.8);
+    color: #f0e68c;
+    border-bottom-color: #FFB347;
+  }
+  .mnt-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0.9rem 20px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .mnt-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+  .mnt-text {
+    flex: 1;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  .mnt-text strong {
+    font-weight: 700;
+    color: var(--gold, #D4AF37);
+  }
+  .mnt-close {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: inherit;
+    padding: 0.3rem 0.6rem;
+    border-radius: 50%;
+    transition: 0.2s;
+    flex-shrink: 0;
+  }
+  .mnt-close:hover {
+    background: rgba(0,0,0,0.1);
+    color: #000;
+  }
+  body.dark .mnt-close:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+  }
+  @keyframes slideDown {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  /* Jika notis ditutup, sembunyikan */
+  .mnt-notice.hidden-notice {
+    display: none;
+  }
+  @media (max-width: 500px) {
+    .mnt-container {
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+    }
+    .mnt-icon { font-size: 1.6rem; }
+  }
 </style>
-</head>
-<body>
-
-<!-- BACKGROUND CHANGE SYSTEM (gambar pertama pakai Unsplash valid) -->
-<div class="bg-container">
-  <img class="bg-img active" id="bgHero" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format" alt="Japan aesthetic background">
-  <img class="bg-img" id="bgAbout" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format" alt="Professional atmosphere background">
-  <img class="bg-img" id="bgExp" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format" alt="Collaborative team background">
-</div>
-<div class="bg-overlay"></div>
-
-<!-- NAVBAR -->
-<div class="nav-wrap">
-  <nav class="navbar">
-    <div class="brand"><b>Berkah Perdana</b><span>Amri Dev</span></div>
-    <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#timeline">Experience</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
-</div>
-
-<!-- HERO + PROFILE + GEAR + SPIN BACKGROUND -->
-<section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-left reveal">
-      <div class="hero-kicker">dev Portfolio</div>
-      <h1 class="hero-title">Berkah <span>Perdana</span><br>Amri Dev</h1>
-      <p class="hero-text">Web developer focused on clean frontend architecture, responsive layouts, and fast user experiences.</p>
-      <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary">Explore Projects</a>
-        <a href="#contact" class="btn btn-outline">Contact Me</a>
-      </div>
-    </div>
-    <div class="hero-right reveal">
-      <div class="profile-wrapper">
-        <!-- Spin background logo berputar di belakang foto -->
-        <div class="spin-bg"></div>
-        <!-- Gear icon di sudut kanan atas -->
-        <div class="gear-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M12 1v3m0 16v3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M1 12h3m16 0h3M4.22 19.78l2.12-2.12m11.32-11.32l2.12-2.12"></path>
-          </svg>
-        </div>
-        <!-- Profile photo bulat -->
-        <div class="profile-photo">
-          <img class="profile-img" src="/p/logo.jpg" alt="Profile photo of Amri Ismail - Berkah Perdana">
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about"><div class="container"><div class="section-head reveal"><div class="section-sub">About</div><h2 class="section-title">Refined Digital Craft</h2><p class="section-text">Modern frontend development with clean visual hierarchy.</p></div><div class="about-grid"><div class="about-card reveal"><h3>Personality & Vision</h3><p>Clean HTML structure, scalable CSS, modern responsive layouts.</p><div class="about-stat"><div class="stat-box"><h4>Fast</h4><span>Optimized</span></div><div class="stat-box"><h4>Clean</h4><span>Structured</span></div></div></div><div class="about-card reveal"><h3>Design Philosophy</h3><p>Understated elegance, natural color harmony.</p><div class="about-stat"><div class="stat-box"><h4>HTML</h4><span>Semantic</span></div><div class="stat-box"><h4>CSS</h4><span>Modern</span></div></div></div></div></div></section>
-
-<!-- SKILLS -->
-<section id="skills"><div class="container"><div class="section-head reveal"><div class="section-sub">Skills</div><h2 class="section-title">Frontend Stack</h2></div><div class="skills-grid"><div class="skill-card reveal"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16v16H4z"></path><path d="M8 8h8v8H8z"></path></svg></div><h3>HTML</h3><p>Semantic layout, SEO hierarchy.</p><div class="tags"><span>SEO</span><span>Semantic</span></div></div><div class="skill-card reveal"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h10"></path></svg></div><h3>CSS</h3><p>Responsive systems, adaptive UI.</p><div class="tags"><span>Responsive</span><span>Flex/Grid</span></div></div><div class="skill-card reveal"><div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 8l-4 4 4 4"></path><path d="M16 8l4 4-4 4"></path></svg></div><h3>JavaScript</h3><p>Lightweight interactions.</p><div class="tags"><span>DOM</span><span>Performance</span></div></div></div></div></section>
-
-<!-- PROJECTS -->
-<section id="projects"><div class="container"><div class="section-head reveal"><div class="section-sub">Projects</div><h2 class="section-title">Selected Works</h2></div><div class="projects-grid"><div class="project-card reveal"><div class="project-thumb"></div><div class="project-content"><h3>POS Dashboard</h3><p>Lightweight cashier interface.</p><a href="#" class="project-link">View →</a></div></div><div class="project-card reveal"><div class="project-thumb"></div><div class="project-content"><h3>Portfolio System</h3><p>Elegant frontend portfolio.</p><a href="#" class="project-link">View →</a></div></div><div class="project-card reveal"><div class="project-thumb"></div><div class="project-content"><h3>Blogspot UI</h3><p>Custom layouts.</p><a href="#" class="project-link">View →</a></div></div></div></div></section>
-
-<!-- TIMELINE -->
-<section id="timeline"><div class="container"><div class="section-head reveal"><div class="section-sub">Experience</div><h2 class="section-title">Journey</h2></div><div class="timeline"><div class="timeline-item reveal"><div class="timeline-card"><div class="timeline-year">2023 — Present</div><h3>Frontend Development</h3><p>Modern UI systems.</p></div></div><div class="timeline-item reveal"><div class="timeline-card"><div class="timeline-year">UI Architecture</div><h3>Performance Focus</h3><p>Lightweight interfaces.</p></div></div></div></div></section>
-
-<!-- CONTACT -->
-<section id="contact"><div class="container"><div class="section-head reveal"><div class="section-sub">Contact</div><h2 class="section-title">Connect</h2></div><div class="social-grid"><a href="#" class="social-card reveal"><h3>GitHub</h3><p>Open source</p></a><a href="#" class="social-card reveal"><h3>Instagram</h3><p>Updates</p></a><a href="#" class="social-card reveal"><h3>LinkedIn</h3><p>Network</p></a><a href="#" class="social-card reveal"><h3>Twitter</h3><p>Thoughts</p></a><a href="#" class="social-card reveal"><h3>WhatsApp</h3><p>Direct chat</p></a></div></div></section>
-
-<footer>
-  <div class="container footer-grid">
-    <div class="footer-brand"><h3>Berkah Perdana • Amri Dev</h3><p>Clean frontend architecture</p></div>
-    <div class="footer-links"><a href="/t/index.html">Team</a><a href="/d/index.html">Owner</a></div>
-  </div>
-</footer>
 
 <script>
-// REVEAL ON SCROLL
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) entry.target.classList.add('active');
-  });
-}, { threshold: 0.1 });
-reveals.forEach(el => observer.observe(el));
-
-// BACKGROUND CHANGE BASED ON SCROLL
-const bgHero = document.getElementById('bgHero');
-const bgAbout = document.getElementById('bgAbout');
-const bgExp = document.getElementById('bgExp');
-const aboutSection = document.querySelector('#about');
-const expSection = document.querySelector('#timeline');
-
-function setActiveBg(target) {
-  [bgHero, bgAbout, bgExp].forEach(img => img.classList.remove('active'));
-  if (target) target.classList.add('active');
-}
-
-function updateBackground() {
-  const scrollY = window.scrollY;
-  const aboutTop = aboutSection?.offsetTop - 200 || 0;
-  const expTop = expSection?.offsetTop - 200 || 0;
-  
-  if (scrollY >= expTop) setActiveBg(bgExp);
-  else if (scrollY >= aboutTop) setActiveBg(bgAbout);
-  else setActiveBg(bgHero);
-}
-
-let ticking = false;
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(() => { updateBackground(); ticking = false; });
-    ticking = true;
-  }
-}, { passive: true });
-updateBackground();
-
-// NAVBAR SHADOW
-const navbar = document.querySelector('.navbar');
-window.addEventListener('scroll', () => {
-  navbar.style.boxShadow = window.scrollY > 30 ? '0 4px 12px rgba(0,0,0,0.08)' : 'none';
-}, { passive: true });
+  (function() {
+    const notice = document.getElementById('maintenance-notice');
+    const closeBtn = document.getElementById('close-notice');
+    // Cek localStorage, jika sudah ditutup sebelumnya, sembunyikan langsung
+    if (localStorage.getItem('maint-notice-closed') === 'true') {
+      notice.classList.add('hidden-notice');
+    }
+    closeBtn.addEventListener('click', () => {
+      notice.classList.add('hidden-notice');
+      localStorage.setItem('maint-notice-closed', 'true');
+    });
+  })();
 </script>
+  <title>Berkah Perdana Enterprise • Portfolio Premium | Glassmorphism + Filter Projek</title>
+  <meta name="description" content="Portfolio profesional Berkah Perdana Enterprise. Pemasaran, freelance, lowongan kerja, jual beli, server, sparepart & kelas bisnis elit. Glass UI, filter interaktif, anti-spam, SEO padu.">
+  <meta name="keywords" content="Berkah Perdana, portfolio, glassmorphism, marketing, freelance, loker, jual beli, sparepart, kelas bisnis, brunei, anti spam">
+  <meta name="author" content="Berkah Perdana Enterprise">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://berkahperdana.com/">
+  <meta property="og:locale" content="ms_BN">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Berkah Perdana Enterprise • Portfolio Premium">
+  <meta property="og:description" content="Pemasaran, freelance, loker & servis IT. Desain glass kaca interaktif.">
+  <meta property="og:url" content="https://berkahperdana.com/">
+  <meta property="og:site_name" content="Berkah Perdana Enterprise">
+  <meta property="og:image" content="https://berkahperdana.com/og-v3.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Berkah Perdana Enterprise V3">
+  <meta name="twitter:description" content="Glassmorphism portfolio, filter projek, animasi scroll.">
+  <meta name="theme-color" content="#0A2F1F">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+  <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Berkah Perdana Enterprise",
+      "url": "https://berkahperdana.com",
+      "email": "business@berkahperdana.com",
+      "telephone": "+6738363366",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Unit 17, Ground Floor, Bangunan Hajah Sinun Binti Simpul Dan Anak-Anak, Simpang 173, Lot 34738, EDR BD30457",
+        "addressLocality": "Kampong Mulaut",
+        "postalCode": "BB4113",
+        "addressCountry": "BN"
+      },
+      "sameAs": ["https://www.facebook.com/berkahperdana","https://www.instagram.com/berkahperdana","https://t.me/berkahperdana","https://www.tiktok.com/@berkahperdana"]
+    }
+  </script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --font: 'Inter', system-ui, sans-serif;
+      --green-deep: #0A2F1F; --gold: #D4AF37; --gold-light: #F0D060;
+      --light-bg: #F9F9F6; --light-text: #1E2E1C;
+      --dark-bg: #121212; --dark-text: #E0E0E0;
+      --glass-bg: rgba(255,255,255,0.35); --glass-dark: rgba(30,30,30,0.5);
+      --glass-border: rgba(255,255,255,0.3); --radius: 24px;
+      --shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+    body {
+      font-family: var(--font); background: var(--light-bg); color: var(--light-text);
+      line-height: 1.6; transition: background 0.3s, color 0.3s; overflow-x: hidden;
+    }
+    body.dark { background: var(--dark-bg); color: var(--dark-text); }
+    .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; width: 100%; }
+    .skip-link { position: absolute; top: -40px; left: 0; background: #000; color: #fff; padding: 8px; z-index: 10000; }
+    .skip-link:focus { top: 0; }
+
+    /* Loader */
+    #loader {
+      position: fixed; inset: 0; background: #0A2F1F; display: flex; align-items: center; justify-content: center;
+      z-index: 9999; transition: opacity 0.5s, visibility 0.5s;
+    }
+    body.dark #loader { background: #1a1a1a; }
+    .loader-spinner {
+      width: 60px; height: 60px; border: 5px solid rgba(255,215,0,0.2);
+      border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    /* Header glass */
+    .header-utama {
+      background: rgba(10,47,31,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      color: white; padding: 1.4rem 0 1rem; border-bottom: 1px solid rgba(255,215,0,0.4);
+    }
+    body.dark .header-utama { background: rgba(20,20,20,0.9); }
+    .logo-bisnes {
+      font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .logo-bisnes span { background: var(--gold); color: #0A2F1F; padding: 0.2rem 1.2rem; border-radius: 30px; font-size: 0.85rem; font-weight: 700; }
+    .dark-toggle {
+      background: rgba(255,255,255,0.1); border: 1px solid var(--gold); color: white; border-radius: 30px;
+      padding: 0.5rem 1.2rem; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .dark-toggle:hover { background: var(--gold); color: #0A2F1F; }
+    .subdomain-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+    .subdomain-link {
+      background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); color: white; text-decoration: none;
+      padding: 0.5rem 1.3rem; border-radius: 30px; font-weight: 600; font-size: 0.9rem;
+      border: 1px solid rgba(255,215,0,0.5); transition: 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .subdomain-link:hover { background: var(--gold); color: #0A2F1F; }
+
+    /* Hero */
+    .hero-bitcoin {
+      background: radial-gradient(circle at 20% 20%, #f9e076, #b8860b); text-align: center; padding: 3.5rem 1.5rem;
+    }
+    body.dark .hero-bitcoin { background: radial-gradient(circle at 20% 20%, #3a2a0a, #1a1a0a); }
+    .big-word {
+      font-size: clamp(4rem, 10vw, 8rem); font-weight: 900; text-transform: uppercase;
+      background: linear-gradient(180deg, #FFD700 20%, #b8860b 80%); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 25px rgba(255,215,0,0.6);
+    }
+    .typing-line { font-size: 1.6rem; font-weight: 600; color: #2d2d2d; }
+    body.dark .typing-line { color: #f0e68c; }
+    #typing-word { color: var(--green-deep); font-weight: 700; border-right: 3px solid #0A2F1F; padding-right: 4px; animation: blink 0.8s infinite; }
+    body.dark #typing-word { color: #FFD700; border-color: #FFD700; }
+    @keyframes blink { 50% { border-color: transparent; } }
+
+    /* Sections backgrounds */
+    .section-bg {
+      padding: 4rem 0; background-size: cover; background-position: center; background-attachment: fixed;
+      position: relative; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    }
+    .section-bg::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.55); z-index: 1; }
+    .section-bg .container { position: relative; z-index: 2; }
+    .section-bg h2 { font-size: 2.4rem; color: #FFD700; margin-bottom: 1rem; }
+    .bg-marketing { background-image: url('https://picsum.photos/seed/marketing/1600/900'); }
+    .bg-freelance { background-image: url('https://picsum.photos/seed/freelance/1600/900'); }
+    .bg-loker { background-image: url('https://picsum.photos/seed/job/1600/900'); }
+    .bg-jualbeli { background-image: url('https://picsum.photos/seed/market/1600/900'); }
+    .bg-server { background-image: url('https://picsum.photos/seed/server/1600/900'); }
+    .bg-sparepart { background-image: url('https://picsum.photos/seed/electronic/1600/900'); }
+    .bg-kelas { background-image: url('https://picsum.photos/seed/class/1600/900'); }
+
+    /* Hex divider */
+    .hex-divider { display: flex; align-items: center; justify-content: center; margin: 0.5rem 0; }
+    .hex-divider::before, .hex-divider::after { content: ""; flex: 1; height: 2px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 0 10px; }
+    .hex-dot { width: 28px; height: 28px; background: var(--gold); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+
+    /* Glass cards */
+    .glass-card {
+      background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-radius: var(--radius); border: 1px solid var(--glass-border); box-shadow: var(--shadow);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    body.dark .glass-card { background: var(--glass-dark); border-color: rgba(255,255,255,0.1); }
+    .glass-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+
+    /* Filter buttons */
+    .filter-buttons { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 2rem 0 1.5rem; }
+    .filter-btn {
+      background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); border: 1px solid var(--gold);
+      color: var(--green-deep); padding: 0.6rem 1.5rem; border-radius: 30px; font-weight: 600;
+      cursor: pointer; transition: 0.3s; font-size: 0.9rem;
+    }
+    body.dark .filter-btn { color: #f0e68c; }
+    .filter-btn.active, .filter-btn:hover { background: var(--gold); color: #0A2F1F; }
+
+    /* Project grid (masonry-like) */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.8rem; }
+    .project-item {
+      background: var(--glass-bg); backdrop-filter: blur(14px); border-radius: var(--radius);
+      border: 1px solid var(--glass-border); padding: 1.8rem; transition: 0.3s; opacity: 1; transform: translateY(0);
+    }
+    body.dark .project-item { background: var(--glass-dark); }
+    .project-item.hidden { display: none; }
+    .project-item:nth-child(3n) { grid-row: span 2; }
+
+    .grid-services { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin: 2rem 0; }
+    .service-card { border-top: 5px solid var(--gold); }
+
+    .social-links { display: flex; flex-wrap: wrap; gap: 1rem; margin: 2rem 0; }
+    .social-btn {
+      background: rgba(30,59,35,0.7); backdrop-filter: blur(8px); color: white; padding: 0.7rem 1.5rem;
+      border-radius: 30px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: 0.2s;
+    }
+    .social-btn:hover { background: var(--gold); color: #0A2F1F; }
+    .legal-box {
+      background: var(--glass-bg); backdrop-filter: blur(14px); border-radius: var(--radius);
+      padding: 1.5rem 2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .adsense-dummy { background: rgba(245,245,245,0.7); padding: 0.5rem 1.5rem; border-radius: 30px; font-size: 0.85rem; }
+    .contact-detail { margin: 2rem 0; }
+
+    footer { background: #0A2F1F; color: #ddd; text-align: center; padding: 2rem 0; border-top: 4px solid var(--gold); }
+    body.dark footer { background: #1a1a1a; }
+    .wa-float {
+      position: fixed; bottom: 30px; right: 25px; background: #25D366; color: white; border-radius: 50%;
+      width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.25); z-index: 998; text-decoration: none;
+    }
+    .cursor-dot {
+      width: 18px; height: 18px; background: var(--gold); border-radius: 50%; position: fixed;
+      pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.1s;
+    }
+    @media (max-width: 600px) { .wa-float { width: 50px; height: 50px; font-size: 1.5rem; bottom: 20px; right: 20px; } }
+    @media print {
+      .wa-float, .cursor-dot, #loader, .header-utama, .subdomain-nav, .social-links, .adsense-dummy, .filter-buttons { display: none !important; }
+      body { background: white; color: black; }
+      .section-bg { background: none; padding: 1rem 0; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip ke konten</a>
+  <div id="loader"><div class="loader-spinner"></div></div>
+
+  <header class="header-utama">
+    <div class="container" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+      <div class="logo-bisnes">🌿 BERKAH PERDANA ENTERPRISE <span>Premium</span></div>
+      <button class="dark-toggle" id="darkToggle" aria-label="Tukar mod gelap/terang"><i class="fas fa-moon" id="modeIcon"></i> <span id="modeText">Dark</span></button>
+    </div>
+    <div class="container">
+      <nav class="subdomain-nav" aria-label="Subdomain navigation">
+        <a href="https://store.berkahperdana.com" target="_blank" class="subdomain-link" rel="noopener"><i class="fas fa-store"></i> Store</a>
+        <a href="https://market.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-shopping-cart"></i> Market</a>
+        <a href="https://servis.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-tools"></i> Servis</a>
+        <a href="https://iklan.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-ad"></i> Iklan</a>
+        <a href="https://blog.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-blog"></i> Blog</a>
+        <a href="https://bisnes.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-briefcase"></i> Bisnes</a>
+        <a href="https://hub.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-globe"></i> Hub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero-bitcoin">
+      <h1 class="big-word">BERKAH</h1>
+      <p class="typing-line">Kami sediakan <span id="typing-word"></span></p>
+    </section>
+
+    <section class="section-bg bg-marketing"><div class="container"><h2>📈 Pemasaran Digital</h2><p>Strategi iklan, SEO, media sosial & content marketing.</p></div></section>
+    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
+    <section class="section-bg bg-freelance"><div class="container"><h2>🧠 Freelance & Talenta</h2><p>Hubungkan projek dengan profesional bebas.</p></div></section>
+    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
+    <section class="section-bg bg-loker"><div class="container"><h2>💼 Lowongan Kerja</h2><p>Platform loker terpercaya, staf hingga eksekutif.</p></div></section>
+    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
+    <section class="section-bg bg-jualbeli"><div class="container"><h2>🛒 Jual Beli & Marketplace</h2><p>Produk baharu & terpakai, selamat.</p></div></section>
+    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
+    <section class="section-bg bg-server"><div class="container"><h2>🖥️ Server & Perusahaan</h2><p>Infrastruktur IT, cloud, politik ekonomi global.</p></div></section>
+    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
+    <section class="section-bg bg-sparepart"><div class="container"><h2>📱 Sparepart & Elektronik</h2><p>Komponen komputer, HP, laptop, servis penuh.</p></div></section>
+    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
+    <section class="section-bg bg-kelas"><div class="container"><h2>🎓 Kelas Bisnis Elit</h2><p>Pelatihan eksklusif bisnes, investasi, tanah.</p></div></section>
+
+    <div class="container" style="margin-top:3rem;">
+      <h2 style="font-size:2.2rem;">✨ Projek Unggulan (Filter)</h2>
+      <div class="filter-buttons" id="filterContainer">
+        <button class="filter-btn active" data-filter="all">Semua</button>
+        <button class="filter-btn" data-filter="marketing">Marketing</button>
+        <button class="filter-btn" data-filter="freelance">Freelance</button>
+        <button class="filter-btn" data-filter="loker">Loker</button>
+        <button class="filter-btn" data-filter="server">Server</button>
+        <button class="filter-btn" data-filter="sparepart">Sparepart</button>
+        <button class="filter-btn" data-filter="kelas">Kelas</button>
+      </div>
+      <div class="projects-grid" id="projectsGrid">
+        <div class="project-item glass-card" data-category="marketing"><h3>🚀 Kampanye Sosmed</h3><p>Naikkan engagement 200%.</p></div>
+        <div class="project-item glass-card" data-category="freelance"><h3>🎨 Desain UI/UX</h3><p>Portfolio freelancer top.</p></div>
+        <div class="project-item glass-card" data-category="loker"><h3>💼 Rekrutmen C-Level</h3><p>Penempatan eksekutif.</p></div>
+        <div class="project-item glass-card" data-category="server"><h3>☁️ Cloud Migration</h3><p>Infrastruktur handal.</p></div>
+        <div class="project-item glass-card" data-category="sparepart"><h3>📱 LCD Replacement</h3><p>Servis cepat bergaransi.</p></div>
+        <div class="project-item glass-card" data-category="kelas"><h3>🎓 Workshop Investasi</h3><p>Mentor bersertifikat.</p></div>
+      </div>
+
+      <h2 style="font-size:2.2rem; margin:2.5rem 0 1.5rem;">🌐 Subdomain & Layanan</h2>
+      <div class="grid-services">
+        <div class="service-card glass-card"><h3>🛍️ Berkah Store</h3><p>Kedai online rasmi.</p><small>store.berkahperdana.com</small></div>
+        <div class="service-card glass-card"><h3>🏪 Pasar Market</h3><p>Marketplace tempatan.</p><small>market.berkahperdana.com</small></div>
+        <div class="service-card glass-card"><h3>🔧 Servis Teknikal</h3><p>Baik pulih & IT support.</p><small>servis.berkahperdana.com</small></div>
+        <div class="service-card glass-card"><h3>📣 Iklan & Promosi</h3><p>Google Ads & sosial media.</p><small>iklan.berkahperdana.com</small></div>
+        <div class="service-card glass-card"><h3>📰 Blog Niaga</h3><p>Tip bisnes & berita.</p><small>blog.berkahperdana.com</small></div>
+        <div class="service-card glass-card"><h3>🤝 Hub Komuniti</h3><p>Networking usahawan.</p><small>hub.berkahperdana.com</small></div>
+      </div>
+
+      <div class="social-links">
+        <a href="https://www.facebook.com/berkahperdana" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i> Facebook</a>
+        <a href="https://www.instagram.com/berkahperdana" target="_blank" class="social-btn"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="https://t.me/berkahperdana" target="_blank" class="social-btn"><i class="fab fa-telegram-plane"></i> Telegram</a>
+        <a href="https://www.tiktok.com/@berkahperdana" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i> TikTok</a>
+        <a href="https://wa.me/6738363366" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+
+      <div class="legal-box glass-card">
+        <div><a href="#" style="margin-right:1.5rem;">📄 Privacy</a><a href="#" style="margin-right:1.5rem;">📜 Terms</a><a href="#" style="margin-right:1.5rem;">⚠️ Disclaimer</a><a href="#">🍪 Cookies</a></div>
+        <div class="adsense-dummy">🟡 [Adsense Ready]</div>
+      </div>
+
+      <div class="contact-detail glass-card" style="display:flex; flex-wrap:wrap; gap:2rem; padding:2rem;">
+        <div><i class="fas fa-map-marker-alt"></i> Unit 17, Ground Floor, Bangunan Hajah Sinun Binti Simpul Dan Anak-Anak, Simpang 173, Lot 34738, EDR BD30457, Kampong Mulaut, BB4113, Brunei.</div>
+        <div><i class="fas fa-envelope"></i> official@berkahperdana.com</div>
+        <div><i class="fas fa-phone"></i> +6738363366</div>
+      </div>
+    </div>
+  </main>
+
+  <footer><div class="container">© 2026 Berkah Perdana Enterprise. Anti-spam protected.</div></footer>
+  <a href="https://wa.me/6738363366" target="_blank" class="wa-float" title="Chat WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <script>
+    (function() {
+      // Loader
+      window.addEventListener('load', () => {
+        document.getElementById('loader').classList.add('hidden');
+        setTimeout(() => { const l = document.getElementById('loader'); if(l) l.remove(); }, 600);
+      });
+
+      // Dark mode
+      const body = document.body;
+      const toggle = document.getElementById('darkToggle');
+      const icon = document.getElementById('modeIcon');
+      const text = document.getElementById('modeText');
+      function setMode(dark) {
+        body.classList.toggle('dark', dark); body.classList.toggle('light', !dark);
+        icon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
+        text.textContent = dark ? 'Light' : 'Dark';
+        localStorage.setItem('berkah-dark-mode', dark);
+      }
+      setMode(localStorage.getItem('berkah-dark-mode') === 'true');
+      toggle.addEventListener('click', () => setMode(!body.classList.contains('dark')));
+
+      // Typing effect
+      const words = ["Marketing", "Freelance", "Loker", "Jual Beli", "Server", "Sparepart", "Kelas Elit"];
+      let wI=0, cI=0, del=false;
+      const span = document.getElementById('typing-word');
+      function type() {
+        const cur = words[wI];
+        span.textContent = del ? cur.substring(0, cI-1) : cur.substring(0, cI+1);
+        if (!del) { cI++; if (cI===cur.length) { del=true; setTimeout(type,1200); return; } }
+        else { cI--; if (cI===0) { del=false; wI=(wI+1)%words.length; } }
+        setTimeout(type, del?50:100);
+      }
+      type();
+
+      // Filter projek
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const projectItems = document.querySelectorAll('.project-item');
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.dataset.filter;
+          projectItems.forEach(item => {
+            item.classList.toggle('hidden', filter !== 'all' && item.dataset.category !== filter);
+          });
+        });
+      });
+
+      // Intersection Observer untuk fade-in
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1; entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.section-bg, .glass-card, .grid-services .service-card, .project-item').forEach(el => {
+        el.style.opacity = 0; el.style.transform = 'translateY(20px)'; el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+      });
+
+      // Custom cursor
+      const cursor = document.getElementById('cursorDot');
+      document.addEventListener('mousemove', e => { cursor.style.left = e.clientX+'px'; cursor.style.top = e.clientY+'px'; });
+      document.addEventListener('mouseleave', () => cursor.style.opacity=0);
+      document.addEventListener('mouseenter', () => cursor.style.opacity=1);
+      // hide on touch
+      if('ontouchstart' in window) cursor.style.display='none';
+    })();
+  </script>
 </body>
 </html>
