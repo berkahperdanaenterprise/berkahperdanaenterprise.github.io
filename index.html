@@ -1,477 +1,1462 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
-<html lang="ms-BN" class="light">
+<html b:css='false' b:defaultwidgetversion='2' b:layoutsversion='3' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   
-  
-  
-  <!-- Notifikasi Maintenance - taruh di dalam <body> paling atas -->
-<div id="maintenance-notice" class="mnt-notice">
-  <div class="mnt-container">
-    <span class="mnt-icon">🚧</span>
-    <div class="mnt-text">
-      <strong>Website dalam penyelenggaraan.</strong> Segera hadir sepenuhnya!<br>
-      <small>Semua perkhidmatan & tenaga kerja kami tetap beroperasi seperti biasa.</small>
-    </div>
-    <button class="mnt-close" id="close-notice" aria-label="Tutup notis">✕</button>
-  </div>
-</div>
+<!-- ===== LOADER + MOUSE KEREN (PORTABLE COMPONENT) ===== -->
+<!-- Copy paste ni je terus -->
 
 <style>
-  .mnt-notice {
-    background: rgba(212, 175, 55, 0.18);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(212, 175, 55, 0.6);
-    color: #0A2F1F;
-    font-family: 'Inter', system-ui, sans-serif;
-    position: relative;
-    z-index: 1000;
-    animation: slideDown 0.5s ease;
-  }
-  body.dark .mnt-notice {
-    background: rgba(30,30,30,0.8);
-    color: #f0e68c;
-    border-bottom-color: #FFB347;
-  }
-  .mnt-container {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 0.9rem 20px;
+  /* LOADER */
+  #loader-wrapper-portable {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #0a0a1a;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    justify-content: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
   }
-  .mnt-icon {
-    font-size: 2rem;
-    flex-shrink: 0;
+  #loader-wrapper-portable.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
-  .mnt-text {
-    flex: 1;
-    font-size: 0.95rem;
-    line-height: 1.4;
-  }
-  .mnt-text strong {
-    font-weight: 700;
-    color: var(--gold, #D4AF37);
-  }
-  .mnt-close {
-    background: none;
-    border: none;
-    font-size: 1.4rem;
-    cursor: pointer;
-    color: inherit;
-    padding: 0.3rem 0.6rem;
+  .loader-spin-portable {
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    transition: 0.2s;
-    flex-shrink: 0;
+    border: 5px solid transparent;
+    border-top-color: #ffd700;
+    border-bottom-color: #ff6b6b;
+    animation: spinPortable 1s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+    position: relative;
   }
-  .mnt-close:hover {
-    background: rgba(0,0,0,0.1);
-    color: #000;
+  .loader-spin-portable::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-left-color: #00d4ff;
+    border-right-color: #ffd700;
+    animation: spinPortable 0.7s linear infinite reverse;
   }
-  body.dark .mnt-close:hover {
-    background: rgba(255,255,255,0.15);
+  @keyframes spinPortable {
+    to { transform: rotate(360deg); }
+  }
+  .loader-text-portable {
+    margin-top: 25px;
     color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #ffd700, #ff6b6b, #00d4ff, #ffd700);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradShiftPortable 3s ease infinite;
   }
-  @keyframes slideDown {
-    from { transform: translateY(-100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+  @keyframes gradShiftPortable {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
-  /* Jika notis ditutup, sembunyikan */
-  .mnt-notice.hidden-notice {
-    display: none;
+
+  /* MOUSE */
+  .cursor-dot-portable {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #ffd700, #ff6b6b);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: width 0.15s, height 0.15s;
+    mix-blend-mode: difference;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
   }
-  @media (max-width: 500px) {
-    .mnt-container {
-      flex-wrap: wrap;
-      justify-content: center;
-      text-align: center;
-    }
-    .mnt-icon { font-size: 1.6rem; }
+  .cursor-ring-portable {
+    position: fixed;
+    width: 35px;
+    height: 35px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+  }
+  .cursor-dot-portable.hover {
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, #00d4ff, #ffd700);
+    mix-blend-mode: normal;
+  }
+  .cursor-ring-portable.hover {
+    width: 55px;
+    height: 55px;
+    border-color: rgba(0, 212, 255, 0.6);
+  }
+
+  @media (max-width: 600px) {
+    .cursor-dot-portable, .cursor-ring-portable { display: none; }
+    body { cursor: auto; }
   }
 </style>
 
+<!-- HTML -->
+<div id="loader-wrapper-portable">
+  <div class="loader-spin-portable"></div>
+  <div class="loader-text-portable">Your trusted home appliances store</div>
+</div>
+
+<div class="cursor-dot-portable" id="cursorDotPortable"></div>
+<div class="cursor-ring-portable" id="cursorRingPortable"></div>
+
+<!-- JAVASCRIPT -->
 <script>
-  (function() {
-    const notice = document.getElementById('maintenance-notice');
-    const closeBtn = document.getElementById('close-notice');
-    // Cek localStorage, jika sudah ditutup sebelumnya, sembunyikan langsung
-    if (localStorage.getItem('maint-notice-closed') === 'true') {
-      notice.classList.add('hidden-notice');
+(function() {
+  'use strict';
+
+  // LOADER - hilang lepas 1.5s
+  const loader = document.getElementById('loader-wrapper-portable');
+  setTimeout(function() {
+    if (loader) {
+      loader.classList.add('hidden');
+      setTimeout(function() {
+        if (loader.parentNode) loader.remove();
+      }, 800);
     }
-    closeBtn.addEventListener('click', () => {
-      notice.classList.add('hidden-notice');
-      localStorage.setItem('maint-notice-closed', 'true');
+  }, 1500);
+
+  // MOUSE
+  const dot = document.getElementById('cursorDotPortable');
+  const ring = document.getElementById('cursorRingPortable');
+
+  if (dot && ring) {
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
     });
-  })();
-</script>
-  <title>Berkah Perdana Enterprise • Portfolio Premium | Glassmorphism + Filter Projek</title>
-  <meta name="description" content="Portfolio profesional Berkah Perdana Enterprise. Pemasaran, freelance, lowongan kerja, jual beli, server, sparepart & kelas bisnis elit. Glass UI, filter interaktif, anti-spam, SEO padu.">
-  <meta name="keywords" content="Berkah Perdana, portfolio, glassmorphism, marketing, freelance, loker, jual beli, sparepart, kelas bisnis, brunei, anti spam">
-  <meta name="author" content="Berkah Perdana Enterprise">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-  <link rel="canonical" href="https://berkahperdana.com/">
-  <meta property="og:locale" content="ms_BN">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Berkah Perdana Enterprise • Portfolio Premium">
-  <meta property="og:description" content="Pemasaran, freelance, loker & servis IT. Desain glass kaca interaktif.">
-  <meta property="og:url" content="https://berkahperdana.com/">
-  <meta property="og:site_name" content="Berkah Perdana Enterprise">
-  <meta property="og:image" content="https://berkahperdana.com/og-v3.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Berkah Perdana Enterprise V3">
-  <meta name="twitter:description" content="Glassmorphism portfolio, filter projek, animasi scroll.">
-  <meta name="theme-color" content="#0A2F1F">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-  <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Berkah Perdana Enterprise",
-      "url": "https://berkahperdana.com",
-      "email": "business@berkahperdana.com",
-      "telephone": "+6738363366",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Unit 17, Ground Floor, Bangunan Hajah Sinun Binti Simpul Dan Anak-Anak, Simpang 173, Lot 34738, EDR BD30457",
-        "addressLocality": "Kampong Mulaut",
-        "postalCode": "BB4113",
-        "addressCountry": "BN"
-      },
-      "sameAs": ["https://www.facebook.com/berkahperdana","https://www.instagram.com/berkahperdana","https://t.me/berkahperdana","https://www.tiktok.com/@berkahperdana"]
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
     }
-  </script>
+    animateRing();
+
+    // Hover effect
+    document.querySelectorAll('button, a, input, .btn, [role="button"]').forEach(function(el) {
+      el.addEventListener('mouseenter', function() {
+        dot.classList.add('hover');
+        ring.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', function() {
+        dot.classList.remove('hover');
+        ring.classList.remove('hover');
+      });
+    });
+
+    // Touch device
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      dot.style.display = 'none';
+      ring.style.display = 'none';
+    }
+  }
+
+})();
+</script>   
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    :root {
-      --font: 'Inter', system-ui, sans-serif;
-      --green-deep: #0A2F1F; --gold: #D4AF37; --gold-light: #F0D060;
-      --light-bg: #F9F9F6; --light-text: #1E2E1C;
-      --dark-bg: #121212; --dark-text: #E0E0E0;
-      --glass-bg: rgba(255,255,255,0.35); --glass-dark: rgba(30,30,30,0.5);
-      --glass-border: rgba(255,255,255,0.3); --radius: 24px;
-      --shadow: 0 12px 32px rgba(0,0,0,0.08);
-    }
-    body {
-      font-family: var(--font); background: var(--light-bg); color: var(--light-text);
-      line-height: 1.6; transition: background 0.3s, color 0.3s; overflow-x: hidden;
-    }
-    body.dark { background: var(--dark-bg); color: var(--dark-text); }
-    .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; width: 100%; }
-    .skip-link { position: absolute; top: -40px; left: 0; background: #000; color: #fff; padding: 8px; z-index: 10000; }
-    .skip-link:focus { top: 0; }
+/* =========================================================
+   1. RESET ++++++++++++++++++++++++++++++ GLOBAL MAROON THEME (Berlaku Semua Halaman)
+   ========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    /* Loader */
-    #loader {
-      position: fixed; inset: 0; background: #0A2F1F; display: flex; align-items: center; justify-content: center;
-      z-index: 9999; transition: opacity 0.5s, visibility 0.5s;
-    }
-    body.dark #loader { background: #1a1a1a; }
-    .loader-spinner {
-      width: 60px; height: 60px; border: 5px solid rgba(255,215,0,0.2);
-      border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+body {
+  font-family: system-ui, -apple-system, &#39;Segoe UI&#39;, Roboto, sans-serif;
+  background: #f8f9fc;
+  color: #1e293b;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
 
-    /* Header glass */
-    .header-utama {
-      background: rgba(10,47,31,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      color: white; padding: 1.4rem 0 1rem; border-bottom: 1px solid rgba(255,215,0,0.4);
-    }
-    body.dark .header-utama { background: rgba(20,20,20,0.9); }
-    .logo-bisnes {
-      font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; display: flex; align-items: center; gap: 0.5rem;
-    }
-    .logo-bisnes span { background: var(--gold); color: #0A2F1F; padding: 0.2rem 1.2rem; border-radius: 30px; font-size: 0.85rem; font-weight: 700; }
-    .dark-toggle {
-      background: rgba(255,255,255,0.1); border: 1px solid var(--gold); color: white; border-radius: 30px;
-      padding: 0.5rem 1.2rem; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;
-    }
-    .dark-toggle:hover { background: var(--gold); color: #0A2F1F; }
-    .subdomain-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
-    .subdomain-link {
-      background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); color: white; text-decoration: none;
-      padding: 0.5rem 1.3rem; border-radius: 30px; font-weight: 600; font-size: 0.9rem;
-      border: 1px solid rgba(255,215,0,0.5); transition: 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;
-    }
-    .subdomain-link:hover { background: var(--gold); color: #0A2F1F; }
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  width: 100%;
+}
 
-    /* Hero */
-    .hero-bitcoin {
-      background: radial-gradient(circle at 20% 20%, #f9e076, #b8860b); text-align: center; padding: 3.5rem 1.5rem;
-    }
-    body.dark .hero-bitcoin { background: radial-gradient(circle at 20% 20%, #3a2a0a, #1a1a0a); }
-    .big-word {
-      font-size: clamp(4rem, 10vw, 8rem); font-weight: 900; text-transform: uppercase;
-      background: linear-gradient(180deg, #FFD700 20%, #b8860b 80%); -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 25px rgba(255,215,0,0.6);
-    }
-    .typing-line { font-size: 1.6rem; font-weight: 600; color: #2d2d2d; }
-    body.dark .typing-line { color: #f0e68c; }
-    #typing-word { color: var(--green-deep); font-weight: 700; border-right: 3px solid #0A2F1F; padding-right: 4px; animation: blink 0.8s infinite; }
-    body.dark #typing-word { color: #FFD700; border-color: #FFD700; }
-    @keyframes blink { 50% { border-color: transparent; } }
+/* Header ++++++++++++++++++++++++++++++ Footer Styling */
+header {
+  margin-bottom: 32px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid #800020;
+}
 
-    /* Sections backgrounds */
-    .section-bg {
-      padding: 4rem 0; background-size: cover; background-position: center; background-attachment: fixed;
-      position: relative; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.7);
-    }
-    .section-bg::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.55); z-index: 1; }
-    .section-bg .container { position: relative; z-index: 2; }
-    .section-bg h2 { font-size: 2.4rem; color: #FFD700; margin-bottom: 1rem; }
-    .bg-marketing { background-image: url('https://picsum.photos/seed/marketing/1600/900'); }
-    .bg-freelance { background-image: url('https://picsum.photos/seed/freelance/1600/900'); }
-    .bg-loker { background-image: url('https://picsum.photos/seed/job/1600/900'); }
-    .bg-jualbeli { background-image: url('https://picsum.photos/seed/market/1600/900'); }
-    .bg-server { background-image: url('https://picsum.photos/seed/server/1600/900'); }
-    .bg-sparepart { background-image: url('https://picsum.photos/seed/electronic/1600/900'); }
-    .bg-kelas { background-image: url('https://picsum.photos/seed/class/1600/900'); }
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #800020 0%, #5e0016 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -0.02em;
+}
 
-    /* Hex divider */
-    .hex-divider { display: flex; align-items: center; justify-content: center; margin: 0.5rem 0; }
-    .hex-divider::before, .hex-divider::after { content: ""; flex: 1; height: 2px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 0 10px; }
-    .hex-dot { width: 28px; height: 28px; background: var(--gold); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+header p {
+  color: #475569;
+  font-size: 1rem;
+  margin-top: 8px;
+}
 
-    /* Glass cards */
-    .glass-card {
-      background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      border-radius: var(--radius); border: 1px solid var(--glass-border); box-shadow: var(--shadow);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    body.dark .glass-card { background: var(--glass-dark); border-color: rgba(255,255,255,0.1); }
-    .glass-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+footer {
+  margin-top: 60px;
+  padding: 24px 0;
+  text-align: center;
+  border-top: 1px solid #e9eef3;
+  color: #64748b;
+  font-size: 0.85rem;
+}
 
-    /* Filter buttons */
-    .filter-buttons { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 2rem 0 1.5rem; }
-    .filter-btn {
-      background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); border: 1px solid var(--gold);
-      color: var(--green-deep); padding: 0.6rem 1.5rem; border-radius: 30px; font-weight: 600;
-      cursor: pointer; transition: 0.3s; font-size: 0.9rem;
-    }
-    body.dark .filter-btn { color: #f0e68c; }
-    .filter-btn.active, .filter-btn:hover { background: var(--gold); color: #0A2F1F; }
+footer a {
+  color: #800020;
+  text-decoration: none;
+}
 
-    /* Project grid (masonry-like) */
-    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.8rem; }
-    .project-item {
-      background: var(--glass-bg); backdrop-filter: blur(14px); border-radius: var(--radius);
-      border: 1px solid var(--glass-border); padding: 1.8rem; transition: 0.3s; opacity: 1; transform: translateY(0);
-    }
-    body.dark .project-item { background: var(--glass-dark); }
-    .project-item.hidden { display: none; }
-    .project-item:nth-child(3n) { grid-row: span 2; }
 
-    .grid-services { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin: 2rem 0; }
-    .service-card { border-top: 5px solid var(--gold); }
+/* =========================================================
+   2. KHUSUS GRID HALAMAN DEPAN / HOME UTAMA (.page-index)
+   ========================================================= */
 
-    .social-links { display: flex; flex-wrap: wrap; gap: 1rem; margin: 2rem 0; }
-    .social-btn {
-      background: rgba(30,59,35,0.7); backdrop-filter: blur(8px); color: white; padding: 0.7rem 1.5rem;
-      border-radius: 30px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: 0.2s;
-    }
-    .social-btn:hover { background: var(--gold); color: #0A2F1F; }
-    .legal-box {
-      background: var(--glass-bg); backdrop-filter: blur(14px); border-radius: var(--radius);
-      padding: 1.5rem 2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;
-    }
-    .adsense-dummy { background: rgba(245,245,245,0.7); padding: 0.5rem 1.5rem; border-radius: 30px; font-size: 0.85rem; }
-    .contact-detail { margin: 2rem 0; }
+/* Setup Grid Murni di Layar Desktop Besar */
+.page-index .blog-posts {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)) !important;
+  gap: 24px !important;
+  padding: 20px 0 !important;
+  margin: 32px 0 !important;
+  float: none !important;
+  clear: both !important;
+}
 
-    footer { background: #0A2F1F; color: #ddd; text-align: center; padding: 2rem 0; border-top: 4px solid var(--gold); }
-    body.dark footer { background: #1a1a1a; }
-    .wa-float {
-      position: fixed; bottom: 30px; right: 25px; background: #25D366; color: white; border-radius: 50%;
-      width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
-      font-size: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.25); z-index: 998; text-decoration: none;
-    }
-    .cursor-dot {
-      width: 18px; height: 18px; background: var(--gold); border-radius: 50%; position: fixed;
-      pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.1s;
-    }
-    @media (max-width: 600px) { .wa-float { width: 50px; height: 50px; font-size: 1.5rem; bottom: 20px; right: 20px; } }
-    @media print {
-      .wa-float, .cursor-dot, #loader, .header-utama, .subdomain-nav, .social-links, .adsense-dummy, .filter-buttons { display: none !important; }
-      body { background: white; color: black; }
-      .section-bg { background: none; padding: 1rem 0; }
-    }
+/* Struktur Card Produk Jualan */
+.page-index .post-outer-container {
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  border: 1px solid #e9eef3 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  flex: unset !important; 
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.page-index .post-outer-container:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 20px -3px rgba(128, 0, 32, 0.15) !important;
+  border-color: #80002040 !important;
+}
+
+.page-index .post-outer, 
+.page-index .post {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  margin: 0 !important;
+}
+
+.page-index .post {
+  padding: 18px !important;
+}
+
+/* Gambar Thumbnail Produk di Home */
+.page-index .post-thumbnail {
+  width: 100% !important;
+  height: 200px !important;
+  object-fit: cover !important;
+  border-radius: 12px !important;
+  margin-bottom: 12px !important;
+  background: #f1f5f9 !important;
+  display: block !important;
+}
+
+/* Judul Jualan */
+.page-index .post-title {
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  margin-bottom: 10px !important;
+}
+
+.page-index .post-title a {
+  text-decoration: none !important;
+  color: #800020 !important;
+}
+
+/* Deskripsi Ringkas (Potong otomatis 3 baris agar tinggi kotak sama rata) */
+.page-index .post-body {
+  font-size: 0.88rem !important;
+  line-height: 1.5 !important;
+  color: #475569 !important;
+  flex: 1 1 auto !important; 
+  margin-bottom: 16px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+/* Tombol Klik / Beli / Read More */
+.page-index .jump-link {
+  margin-top: auto !important; 
+  margin-bottom: 4px !important;
+}
+
+.page-index .jump-link a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 8px 16px !important;
+  background: #800020 !important;
+  color: white !important;
+  border-radius: 30px !important;
+  text-decoration: none !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s !important;
+}
+
+.page-index .jump-link a:hover {
+  background: #5e0016 !important;
+}
+
+/* Kaki Card */
+.page-index .post-footer {
+  margin-top: auto !important;
+  padding-top: 12px !important;
+  border-top: 1px solid #eef2f6 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-size: 0.75rem !important;
+}
+
+.page-index .post-labels {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+.page-index .post-labels a {
+  display: inline-block !important;
+  padding: 2px 8px !important;
+  background: #f1f5f9 !important;
+  border-radius: 30px !important;
+  text-decoration: none !important;
+  color: #5e0016 !important;
+}
+
+
+/* =========================================================
+   3. RESPONSIVE UTAMA (FIX ANTI-BUG TABLET ++++++++++++++++++++++++++++++ HP)
+   ========================================================= */
+
+/* [A] SOLUSI SAKTI PORTRAIT TABLET (Lebar Layar 481px sampai 991px) 
+   MEMAKSA 2 KOLOM GRID TETAP COCOK DI DALAM RUANG 400px SAMPING SIDEBAR */
+@media (min-width: 481px) and (max-width: 991px) {
+  .container {
+    padding: 0 10px !important;
+  }
+
+  /* PAKSA 2 KOLOM di sisa ruang tablet yang ciut */
+  .page-index .blog-posts {
+    grid-template-columns: repeat(2, 1fr) !important; 
+    gap: 12px !important; /* Jarak antar card dirapatkan biar hemat lapak */
+    margin: 20px 0 !important;
+    padding: 0 2px !important;
+  }
+
+  .page-index .post-outer-container {
+    border-radius: 12px !important;
+  }
+
+  /* KUNCI ANTI-BUG: Padding dalam card dipangkas jadi 10px biar teks jualan dapet ruang lega */
+  .page-index .post {
+    padding: 10px !important; 
+  }
+
+  /* Tinggi gambar disesuaikan (140px) biar proporsional dengan lebar kotak yang ciut */
+  .page-index .post-thumbnail {
+    height: 140px !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Huruf judul jualan dikecilkan biar gak kepotong berantakan */
+  .page-index .post-title {
+    font-size: 0.95rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 6px !important;
+  }
+  
+  /* Deskripsi produk dipotong maksimal 2 baris saja biar hemat tempat vertikal */
+  .page-index .post-body {
+    font-size: 0.78rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 10px !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  /* Tombol beli dibikin full width kotak biar estetik dan gampang di-klik di tablet */
+  .page-index .jump-link a {
+    width: 100% !important;
+    padding: 6px 10px !important;
+    font-size: 0.75rem !important;
+    justify-content: center !important;
+  }
+
+  /* Sembunyikan label/tags di tablet biar area bawah card gak numpuk sumpek */
+  .page-index .post-labels {
+    display: none !important; 
+  }
+
+  .page-index .post-footer {
+    padding-top: 6px !important;
+    font-size: 0.65rem !important;
+  }
+}
+
+/* [B] MODE PORTRAIT HP / IPHONE (Maksimal 480px)
+   Sidebar otomatis hilang/turun, space kembali 100% lapang untuk produk */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 8px !important; 
+  }
+
+  /* TETAP KUNCI 2 KOLOM PORTRAIT UNTUK HP (SUDAH FIX LEGA) */
+  .page-index .blog-posts {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    padding: 4px !important;
+    margin: 16px 0 !important;
+  }
+
+  .page-index .post-outer-container {
+    border-radius: 12px !important;
+  }
+
+  /* Padding diperkecil agar teks jualan di HP tidak terhimpit */
+  .page-index .post {
+    padding: 10px !important; 
+  }
+
+  .page-index .post-thumbnail {
+    height: 125px !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .page-index .post-title {
+    font-size: 0.95rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 6px !important;
+  }
+
+  .page-index .post-body {
+    font-size: 0.78rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 10px !important;
+    -webkit-line-clamp: 2 !important; /* Cukup 2 baris di HP agar menghemat space */
+  }
+
+  .page-index .jump-link a {
+    width: 100% !important;
+    padding: 6px 10px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .page-index .post-labels {
+    display: none !important; /* Sembunyikan label di HP biar space bawah bersih */
+  }
+  
+  .page-index .post-footer {
+    padding-top: 6px !important;
+    font-size: 0.65rem !important;
+  }
+}
+
+
+/* =========================================================
+   4. PROTEKSI AMAN UNTUK HALAMAN DETAIL ARTIKEL (.page-item)
+   ========================================================= */
+.page-item .post-outer-container,
+.page-static .post-outer-container {
+  background: #ffffff !important;
+  padding: 24px !important;
+  border-radius: 16px !important;
+  border: 1px solid #e9eef3 !important;
+  max-width: 100% !important;
+}
+
+.page-item .post-body img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 12px !important;
+  margin: 8px 0 !important;
+}
+
+/* Navigasi Pagination */
+.blog-pager {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 16px !important;
+  margin: 48px 0 20px !important;
+}
+
+.blog-pager a {
+  padding: 10px 24px !important;
+  background: white !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 40px !important;
+  text-decoration: none !important;
+  color: #800020 !important;
+  font-weight: 500 !important;
+}
+
+/* Core Rendering Speed Path */
+img, .post-thumbnail {
+  content-visibility: auto;
+  contain: paint;
+}
+</style>
+  
+   
+  
+  
+
+  <meta charset='utf-8'/>
+  <meta content='width=device-width, initial-scale=1' name='viewport'/>
+  <b:include data='blog' name='all-head-content'/>
+  <title><data:blog.pageTitle/></title>
+  <style>
+  
+  
+  /* ===== COMP2: HYBRID OPSI E (FULL) ===== */
+
+/* --- BASE STYLE --- */
+.comp2-drawer {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+/* --- DESKTOP MODE (SIDEBAR KIRI) --- */
+@media (min-width: 769px) {
+  .comp2-overlay {
+    position: relative !important;
+    display: block !important;
+    background: transparent !important;
+    width: 320px;
+    flex-shrink: 0;
+    height: auto;
+    pointer-events: none;
+  }
+
+  .comp2-drawer {
+    position: sticky;
+    top: 20px;
+    height: calc(100vh - 40px);
+    border-radius: 16px;
+    border: 1px solid #e9eef3;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    transform: none !important;
+    width: 100%;
+    pointer-events: auto;
+    transition: none !important;
+  }
+
+  #comp2-menu-trigger { display: none !important; }
+  .comp2-close-btn { display: none !important; }
+
+  /* Layout wrapper */
+  .comp2-hybrid-wrap {
+    display: flex;
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    align-items: flex-start;
+  }
+  .comp2-hybrid-main { flex: 1; min-width: 0; }
+}
+
+/* --- MOBILE MODE (SLIDE) --- */
+@media (max-width: 768px) {
+  .comp2-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 99999;
+    display: none;
+  }
+  .comp2-overlay.active { display: block; }
+
+  .comp2-drawer {
+    width: 85%;
+    max-width: 85%;
+    height: 100vh;
+    box-shadow: 2px 0 20px rgba(0,0,0,0.3);
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0;
+  }
+  .comp2-overlay.active .comp2-drawer { transform: translateX(0); }
+  .comp2-close-btn { display: block !important; }
+
+  /* Tombol trigger di mobile */
+  #comp2-menu-trigger {
+    display: inline-flex !important;
+  }
+}
+
+/* --- INTERNAL STYLES (SAMA UNTUK SEMUA) --- */
+.comp2-drawer-header {
+  background: #5d142b; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+}
+.comp2-logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.comp2-logo-area img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #c8a445; object-fit: cover; }
+.comp2-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+.comp2-logo-name { font-size: 16px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+.comp2-logo-badge { font-size: 9px; font-weight: 600; color: #c8a445; text-transform: uppercase; }
+.comp2-close-btn { background: transparent; border: none; color: #fff; font-size: 26px; cursor: pointer; padding: 4px 8px; }
+
+.comp2-cat-header { background: #5d142b; color: #fff; padding: 12px 20px; font-weight: 700; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
+.comp2-cat-list { display: flex; flex-direction: column; padding: 0 16px; background: #fff; }
+.comp2-cat-list a { display: flex; align-items: center; gap: 14px; padding: 14px 0; text-decoration: none; color: #1e293b; font-size: 14px; font-weight: 500; border-bottom: 1px solid #f1f5f9; }
+.comp2-cat-list a span { margin-left: auto; color: #94a3b8; font-size: 18px; }
+.comp2-cat-list a svg { color: #1e293b; flex-shrink: 0; }
+
+.comp2-badge-box { background: #5d142b; margin: 20px 16px; padding: 12px 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; }
+.comp2-badge-item { display: flex; align-items: center; gap: 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.comp2-badge-item:last-child { border-bottom: none; }
+.comp2-badge-item div { color: #fff; line-height: 1.3; }
+.comp2-badge-item strong { font-size: 13px; font-weight: 700; display: block; }
+.comp2-badge-item span { font-size: 11px; opacity: 0.8; font-weight: 400; }
+
+.comp2-footer { background: #5d142b; padding: 24px 20px 32px; margin-top: auto; }
+.comp2-footer .comp2-logo-area img { border-color: #c8a445; }
+.comp2-footer .comp2-logo-name { color: #fff; }
+.comp2-footer .comp2-logo-badge { color: #c8a445; }
+.comp2-footer-desc { color: rgba(255,255,255,0.8); font-size: 13px; line-height: 1.6; margin-top: 12px; font-weight: 400; }
+  
+  
+  
   </style>
+<style>
+    /* ===== COMPONENT BARU 100% AKURAT ===== */
+.comp-wrap {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f8f9fc;
+  padding: 0 0 40px 0;
+  color: #1e293b;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* --- HEADER SEARCH BAR --- */
+.comp-top-bar {
+  background: #5d142b;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.comp-logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.comp-logo-area img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #c8a445;
+  object-fit: cover;
+}
+.comp-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.comp-logo-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+.comp-logo-badge {
+  font-size: 9px;
+  font-weight: 600;
+  color: #c8a445;
+  text-transform: uppercase;
+}
+.comp-search-group {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  background: #fff;
+  border-radius: 40px;
+  overflow: hidden;
+  height: 42px;
+}
+.comp-search-group input {
+  flex: 1;
+  border: none;
+  padding: 0 16px;
+  font-size: 14px;
+  outline: none;
+  color: #333;
+}
+.comp-search-group input::placeholder { color: #999; }
+.comp-search-group select {
+  border: none;
+  background: #f1f5f9;
+  padding: 0 14px;
+  font-size: 13px;
+  color: #475569;
+  outline: none;
+  border-right: 1px solid #e2e8f0;
+  cursor: pointer;
+}
+.comp-search-group button {
+  background: #c8a445;
+  border: none;
+  padding: 0 18px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.comp-top-icons {
+  display: flex;
+  gap: 18px;
+  color: #fff;
+  align-items: center;
+}
+.comp-top-icons a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+
+  
+
+  
+  
+  
+ 
+/* --- SECTION HEADERS --- */
+.comp-section {
+  padding: 24px 20px 0 20px;
+}
+.comp-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.comp-section-header h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #5d142b;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+.comp-section-header h2::before {
+  content: &quot;&quot;;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: #5d142b;
+  border-radius: 50%;
+}
+.comp-section-header a {
+  font-size: 13px;
+  color: #5d142b;
+  text-decoration: none;
+  font-weight: 600;
+}
+.comp-section-header a::after { content: &quot; &#8250;&quot;; }
+
+/* --- CATEGORY GRID --- */
+.comp-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 12px;
+}
+@media (max-width: 1024px) {
+  .comp-cat-grid { grid-template-columns: repeat(5, 1fr); }
+}
+@media (max-width: 600px) {
+  .comp-cat-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.comp-cat-item {
+  background: #fff;
+  border: 1px solid #e9eef3;
+  border-radius: 12px;
+  padding: 16px 4px;
+  text-align: center;
+  text-decoration: none;
+  color: #1e293b;
+  transition: 0.2s;
+}
+.comp-cat-item:hover { border-color: #5d142b; transform: translateY(-2px); }
+.comp-cat-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.comp-cat-item span { font-size: 13px; font-weight: 600; display: block; color: #1e293b; }
+
+/* --- SLIDER WRAPPER (UNTUK ALL) --- */
+.comp-slider-wrap {
+  position: relative;
+}
+.comp-slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: #5d142b;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border: 2px solid #fff;
+}
+.comp-slider-left { left: -20px; }
+.comp-slider-right { right: -20px; }
+@media (max-width: 768px) {
+  .comp-slider-left { left: -10px; width: 30px; height: 30px; font-size: 14px; }
+  .comp-slider-right { right: -10px; width: 30px; height: 30px; font-size: 14px; }
+}
+
+/* --- PROMO CARDS --- */
+.comp-promo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1024px) {
+  .comp-promo-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .comp-promo-grid { grid-template-columns: 1fr; }
+}
+.comp-promo-card {
+  background: linear-gradient(135deg, #6d1a32 0%, #4a0f22 100%);
+  border-radius: 16px;
+  padding: 20px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+}
+.comp-promo-card .p-label { font-size: 12px; font-weight: 600; opacity: 0.9; text-transform: uppercase; }
+.comp-promo-card .p-disc { font-size: 32px; font-weight: 800; line-height: 1; margin: 4px 0; }
+.comp-promo-card .p-desc { font-size: 12px; opacity: 0.9; margin-bottom: 12px; font-weight: 500; }
+.comp-promo-card .p-img {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  opacity: 0.95;
+}
+.comp-promo-card .p-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  z-index: 2;
+  position: relative;
+}
+.comp-promo-card .p-btns a {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  background: #fff;
+  color: #5d142b;
+  transition: 0.2s;
+}
+.comp-promo-card .p-btns a:last-child {
+  background: #c8a445;
+  color: #fff;
+}
+.comp-promo-card .p-btns a:hover { transform: scale(1.05); }
+
+/* --- PRODUCT CARDS (CHEAP + BEST) --- */
+.comp-prod-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1024px) {
+  .comp-prod-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .comp-prod-grid { grid-template-columns: 1fr; }
+}
+.comp-prod-card {
+  background: #fff;
+  border: 1px solid #e9eef3;
+  border-radius: 16px;
+  padding: 16px;
+  position: relative;
+  transition: 0.2s;
+}
+.comp-prod-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+.comp-prod-card .badge-disc {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #dc2626;
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  z-index: 2;
+}
+.comp-prod-card .badge-best {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #c8a445;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  z-index: 2;
+}
+.comp-prod-card img {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 12px;
+}
+.comp-prod-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #1e293b;
+  line-height: 1.3;
+  min-height: 36px;
+}
+.comp-prod-card .price { font-size: 16px; font-weight: 700; color: #5d142b; margin: 4px 0; }
+.comp-prod-card .stars { color: #c8a445; font-size: 13px; margin: 4px 0; font-weight: 600; }
+.comp-prod-card .stars span { color: #64748b; font-weight: 400; font-size: 12px; }
+.comp-prod-card .p-btns {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.comp-prod-card .p-btns a {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  text-decoration: none;
+  background: #f1f5f9;
+  color: #1e293b;
+  font-weight: 500;
+  transition: 0.2s;
+}
+.comp-prod-card .p-btns a:last-child {
+  background: #c8a445;
+  color: #fff;
+}
+.comp-prod-card .p-btns a:hover { transform: scale(1.05); }
+  
+  
+  
+ </style>
+  <b:skin><![CDATA[]]></b:skin>
 </head>
-<body>
-  <a href="#main-content" class="skip-link">Skip ke konten</a>
-  <div id="loader"><div class="loader-spinner"></div></div>
+<body expr:class='&quot;page-&quot; + data:blog.pageType + &quot; &quot; + data:blog.mobileClass'>
+  
+ <header>
+  
+  <div>
+    
+  <div class='comp-wrap'>
 
-  <header class="header-utama">
-    <div class="container" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;">
-      <div class="logo-bisnes">🌿 BERKAH PERDANA ENTERPRISE <span>Premium</span></div>
-      <button class="dark-toggle" id="darkToggle" aria-label="Tukar mod gelap/terang"><i class="fas fa-moon" id="modeIcon"></i> <span id="modeText">Dark</span></button>
+  <!-- TOP BAR SEARCH DENGAN LOGO -->
+  <div class='comp-top-bar'>
+    <a class='comp-logo-area' href='/'>
+      <img alt='Berkah Perdana' src='https://server-enterprise.pages.dev/logo.webp'/>
+      <div class='comp-logo-text'>
+        <span class='comp-logo-name'>BERKAH PERDANA</span>
+        <span class='comp-logo-badge'>Enterprise</span>
+      </div>
+    </a>
+    <div class='comp-search-group'>
+      <input placeholder='Search for products...' type='text'/>
+      <select><option>All Categories</option></select>
+    <button style='background:#c8a445; border:none; padding:0 18px; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; height:42px;'>
+  <svg fill='none' height='18' stroke='#fff' stroke-width='2' viewBox='0 0 24 24' width='18'>
+    <circle cx='11' cy='11' r='8'/>
+    <line x1='21' x2='16.65' y1='21' y2='16.65'/>
+  </svg>
+</button>
     </div>
-    <div class="container">
-      <nav class="subdomain-nav" aria-label="Subdomain navigation">
-        <a href="https://store.berkahperdana.com" target="_blank" class="subdomain-link" rel="noopener"><i class="fas fa-store"></i> Store</a>
-        <a href="https://market.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-shopping-cart"></i> Market</a>
-        <a href="https://servis.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-tools"></i> Servis</a>
-        <a href="https://iklan.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-ad"></i> Iklan</a>
-        <a href="https://blog.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-blog"></i> Blog</a>
-        <a href="https://bisnes.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-briefcase"></i> Bisnes</a>
-        <a href="https://hub.berkahperdana.com" target="_blank" class="subdomain-link"><i class="fas fa-globe"></i> Hub</a>
-      </nav>
+    
+    <div class='comp-top-icons'>
+  <a href='#' style='display:inline-flex; align-items:center; gap:6px; color:#fff; text-decoration:none; font-size:13px; font-weight:500;'>
+    <svg fill='none' height='20' stroke='#fff' stroke-width='2' viewBox='0 0 24 24' width='20'>
+      <circle cx='12' cy='8' r='4'/>
+      <path d='M4 20c0-4 4-6 8-6s8 2 8 6'/>
+    </svg>
+    My Account
+  </a>
+
+  <a href='#' style='display:inline-flex; align-items:center; gap:6px; color:#fff; text-decoration:none; font-size:13px; font-weight:500;'>
+    <svg fill='none' height='20' stroke='#fff' stroke-width='2' viewBox='0 0 24 24' width='20'>
+      <path d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'/>
+    </svg>
+    Wishlist
+  </a>
+
+ <a href='#' style='position:relative; display:inline-flex; align-items:center; color:#fff; text-decoration:none; font-size:13px; font-weight:500;'>
+  <svg fill='none' height='20' stroke='#fff' stroke-width='2' viewBox='0 0 24 24' width='20'>
+    <circle cx='9' cy='21' r='1'/>
+    <circle cx='20' cy='21' r='1'/>
+    <path d='M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6'/>
+  </svg>
+  <span style='position:absolute; top:-10px; right:24px; background:#c8a445; color:#5d142b; width:16px; height:16px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:9px; font-weight:700;'>0</span>
+  <span style='margin-left:6px;'>Cart</span>
+</a>
+ 
+      
+<a class='comp2-menu-btn' href='#' id='comp2-menu-trigger' style='display:inline-flex; align-items:center; gap:8px; color:#fff; text-decoration:none; font-size:13px; font-weight:500;' title='Open Menu'>
+  All Categories
+  <svg fill='none' height='25' stroke='#c8a445' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.8' viewBox='0 0 24 24' width='28' xmlns='http://www.w3.org/2000/svg'>
+    <rect height='7' rx='1.5' width='7' x='3' y='3'/>
+    <rect height='7' rx='1.5' width='7' x='14' y='3'/>
+    <rect height='7' rx='1.5' width='7' x='3' y='14'/>
+    <rect height='7' rx='1.5' width='7' x='14' y='14'/>
+  </svg>
+</a>      
+</div>
+</div>
+</div>
+</div>
+      
+    </header> 
+  
+  
+  
+  
+  
+  
+  <div class='container'>
+  
+
+    
+    
+    
+    <!-- ===== COMP2: HYBRID SIDEBAR/MODAL (DESKTOP SIDEBAR, MOBILE SLIDE) ===== -->
+
+<!-- SIDEBAR / MODAL CONTAINER -->
+
+<div class='container comp2-hybrid-wrap'>
+ 
+  
+  
+  
+<div class='comp2-overlay' id='comp2-modal-overlay'>
+  <div class='comp2-drawer' id='comp2-modal-drawer'>
+    
+    <!-- HEADER MODAL: LOGO ATAS -->
+    <div class='comp2-drawer-header'>
+      <a class='comp2-logo-area' href='/'>
+        <img alt='Berkah Perdana' src='https://server-enterprise.pages.dev/logo.webp'/>
+        <div class='comp2-logo-text'>
+          <span class='comp2-logo-name'>BERKAH PERDANA</span>
+          <span class='comp2-logo-badge'>ENTERPRISE</span>
+        </div>
+      </a>
+      <button class='comp2-close-btn' id='comp2-close-btn'>
+     
+      
+      
+      
+<span style='display:inline-flex; align-items:center; gap:4px;'>
+  <svg fill='none' stroke='#fff' stroke-width='2' style='width:18px; height:18px;' viewBox='0 0 24 24'>
+    <polyline points='15 18 9 12 15 6'/>
+    <polyline points='19 18 13 12 19 6'/>
+  </svg>
+  <svg fill='red' stroke='#c8a445' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.8' style='width:20px; height:20px;' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+    <rect height='7' rx='1.5' width='7' x='3' y='3'/>
+    <rect height='7' rx='1.5' width='7' x='14' y='3'/>
+    <rect height='7' rx='1.5' width='7' x='3' y='14'/>
+    <rect height='7' rx='1.5' width='7' x='14' y='14'/>
+  </svg>
+  
+</span>      
+      
+      
+      
+      </button>
     </div>
-  </header>
 
-  <main id="main-content">
-    <section class="hero-bitcoin">
-      <h1 class="big-word">BERKAH</h1>
-      <p class="typing-line">Kami sediakan <span id="typing-word"></span></p>
-    </section>
+    <!-- KATEGORI -->
+    <div class='comp2-cat-header'>ALL CATEGORIES </div>
+    <nav class='comp2-cat-list'>
+      <a href='#'><svg fill='none' height='20' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' width='20'><rect height='16' rx='2' width='20' x='2' y='4'/><line x1='6' x2='18' y1='8' y2='8'/></svg> Aircond <span>&#8250;</span></a>
+      <a href='#'><svg fill='none' height='20' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' width='20'><rect height='18' rx='2' width='18' x='3' y='3'/><circle cx='12' cy='12' r='4'/></svg> Washer <span>&#8250;</span></a>
+      <a href='#'><svg fill='none' height='20' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' width='20'><rect height='12' rx='2' width='20' x='2' y='8'/><line x1='2' x2='22' y1='12' y2='12'/><rect height='4' rx='1' width='12' x='6' y='4'/></svg> Cooker <span>&#8250;</span></a>
+      <a href='#'><svg fill='none' height='20' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' width='20'><path d='M4 17h16v-4c0-3-2.5-5-6-5h-4c-3.5 0-6 2-6 5v4z'/><path d='M12 8l3-4'/><rect height='3' rx='1' width='4' x='14' y='2'/><circle cx='8' cy='13' r='0.8'/><circle cx='11' cy='13' r='0.8'/><circle cx='14' cy='13' r='0.8'/></svg> Iron <span>&#8250;</span></a>
+      <a href='#'><svg fill='none' height='20' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' width='20'><rect height='18' rx='2' width='16' x='4' y='3'/><circle cx='12' cy='12' r='4'/></svg> Sound <span>&#8250;</span></a>
+      <a href='#'><svg fill='none' height='20' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' width='20'><rect height='20' rx='2' width='14' x='5' y='2'/><line x1='5' x2='19' y1='10' y2='10'/><line x1='9' x2='9' y1='5' y2='7'/><line x1='15' x2='15' y1='5' y2='7'/></svg> Refrigerator <span>&#8250;</span></a>
+      <a href='#'><svg fill='none' height='20' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' width='20'><rect height='16' rx='2' width='20' x='2' y='4'/><line x1='8' x2='16' y1='20' y2='20'/><line x1='12' x2='12' y1='16' y2='20'/></svg> Television <span>&#8250;</span></a>
+      <a href='#'><svg fill='none' height='20' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' width='20'><circle cx='12' cy='12' r='2'/><path d='M12 10c0-2-2-4-5-4-2 0-4 2-4 5 0 3 2 5 5 5'/><path d='M14 12c0 2 2 4 5 4 2 0 4-2 4-5 0-3-2-5-5-5'/><path d='M12 14c-2 0-4 2-4 5 0 2 2 4 5 4 3 0 5-2 5-5'/><path d='M10 12c0-2-2-4-5-4-2 0-4 2-4 5 0 3 2 5 5 5'/></svg> Fan <span>&#8250;</span></a>
+      <a href='#'><svg fill='none' height='20' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' width='20'><circle cx='17' cy='17' r='4'/><path d='M13 14l-7-7'/><rect height='6' rx='1' width='4' x='4' y='3'/></svg> Vacuum Cleaner <span>&#8250;</span></a>
+      <a href='#'><svg fill='none' height='20' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' width='20'><rect height='14' rx='2' width='12' x='6' y='6'/><line x1='12' x2='12' y1='2' y2='6'/><circle cx='12' cy='13' r='2.5'/><line x1='10' x2='10' y1='20' y2='23'/><line x1='14' x2='14' y1='20' y2='23'/></svg> Water Heater <span>&#8250;</span></a>
+    </nav>
 
-    <section class="section-bg bg-marketing"><div class="container"><h2>📈 Pemasaran Digital</h2><p>Strategi iklan, SEO, media sosial & content marketing.</p></div></section>
-    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
-    <section class="section-bg bg-freelance"><div class="container"><h2>🧠 Freelance & Talenta</h2><p>Hubungkan projek dengan profesional bebas.</p></div></section>
-    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
-    <section class="section-bg bg-loker"><div class="container"><h2>💼 Lowongan Kerja</h2><p>Platform loker terpercaya, staf hingga eksekutif.</p></div></section>
-    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
-    <section class="section-bg bg-jualbeli"><div class="container"><h2>🛒 Jual Beli & Marketplace</h2><p>Produk baharu & terpakai, selamat.</p></div></section>
-    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
-    <section class="section-bg bg-server"><div class="container"><h2>🖥️ Server & Perusahaan</h2><p>Infrastruktur IT, cloud, politik ekonomi global.</p></div></section>
-    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
-    <section class="section-bg bg-sparepart"><div class="container"><h2>📱 Sparepart & Elektronik</h2><p>Komponen komputer, HP, laptop, servis penuh.</p></div></section>
-    <div class="container"><div class="hex-divider"><span class="hex-dot"></span></div></div>
-    <section class="section-bg bg-kelas"><div class="container"><h2>🎓 Kelas Bisnis Elit</h2><p>Pelatihan eksklusif bisnes, investasi, tanah.</p></div></section>
-
-    <div class="container" style="margin-top:3rem;">
-      <h2 style="font-size:2.2rem;">✨ Projek Unggulan (Filter)</h2>
-      <div class="filter-buttons" id="filterContainer">
-        <button class="filter-btn active" data-filter="all">Semua</button>
-        <button class="filter-btn" data-filter="marketing">Marketing</button>
-        <button class="filter-btn" data-filter="freelance">Freelance</button>
-        <button class="filter-btn" data-filter="loker">Loker</button>
-        <button class="filter-btn" data-filter="server">Server</button>
-        <button class="filter-btn" data-filter="sparepart">Sparepart</button>
-        <button class="filter-btn" data-filter="kelas">Kelas</button>
+    <!-- BADGE LAYANAN -->
+    <div class='comp2-badge-box'>
+      <div class='comp2-badge-item'>
+        <svg fill='none' height='22' stroke='#c8a445' stroke-width='2' viewBox='0 0 24 24' width='22'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/><path d='M12 8v4'/><path d='M12 16h.01'/></svg>
+        <div><strong>100% ORIGINAL</strong><br/><span>Original &amp; Genuine Products</span></div>
       </div>
-      <div class="projects-grid" id="projectsGrid">
-        <div class="project-item glass-card" data-category="marketing"><h3>🚀 Kampanye Sosmed</h3><p>Naikkan engagement 200%.</p></div>
-        <div class="project-item glass-card" data-category="freelance"><h3>🎨 Desain UI/UX</h3><p>Portfolio freelancer top.</p></div>
-        <div class="project-item glass-card" data-category="loker"><h3>💼 Rekrutmen C-Level</h3><p>Penempatan eksekutif.</p></div>
-        <div class="project-item glass-card" data-category="server"><h3>☁️ Cloud Migration</h3><p>Infrastruktur handal.</p></div>
-        <div class="project-item glass-card" data-category="sparepart"><h3>📱 LCD Replacement</h3><p>Servis cepat bergaransi.</p></div>
-        <div class="project-item glass-card" data-category="kelas"><h3>🎓 Workshop Investasi</h3><p>Mentor bersertifikat.</p></div>
+      <div class='comp2-badge-item'>
+        <svg fill='none' height='22' stroke='#c8a445' stroke-width='2' viewBox='0 0 24 24' width='22'><rect height='13' rx='2' width='15' x='1' y='3'/><polyline points='16 8 20 8 23 11 23 16 16 16 16 8'/><circle cx='5.5' cy='18.5' r='2.5'/><circle cx='18.5' cy='18.5' r='2.5'/></svg>
+        <div><strong>FAST DELIVERY</strong><br/><span>Delivery Across Malaysia</span></div>
       </div>
-
-      <h2 style="font-size:2.2rem; margin:2.5rem 0 1.5rem;">🌐 Subdomain & Layanan</h2>
-      <div class="grid-services">
-        <div class="service-card glass-card"><h3>🛍️ Berkah Store</h3><p>Kedai online rasmi.</p><small>store.berkahperdana.com</small></div>
-        <div class="service-card glass-card"><h3>🏪 Pasar Market</h3><p>Marketplace tempatan.</p><small>market.berkahperdana.com</small></div>
-        <div class="service-card glass-card"><h3>🔧 Servis Teknikal</h3><p>Baik pulih & IT support.</p><small>servis.berkahperdana.com</small></div>
-        <div class="service-card glass-card"><h3>📣 Iklan & Promosi</h3><p>Google Ads & sosial media.</p><small>iklan.berkahperdana.com</small></div>
-        <div class="service-card glass-card"><h3>📰 Blog Niaga</h3><p>Tip bisnes & berita.</p><small>blog.berkahperdana.com</small></div>
-        <div class="service-card glass-card"><h3>🤝 Hub Komuniti</h3><p>Networking usahawan.</p><small>hub.berkahperdana.com</small></div>
+      <div class='comp2-badge-item'>
+        <svg fill='none' height='22' stroke='#c8a445' stroke-width='2' viewBox='0 0 24 24' width='22'><rect height='11' rx='2' ry='2' width='18' x='3' y='11'/><path d='M7 11V7a5 5 0 0 1 10 0v4'/></svg>
+        <div><strong>SECURE PAYMENT</strong><br/><span>Safe &amp; Secure Transactions</span></div>
       </div>
-
-      <div class="social-links">
-        <a href="https://www.facebook.com/berkahperdana" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i> Facebook</a>
-        <a href="https://www.instagram.com/berkahperdana" target="_blank" class="social-btn"><i class="fab fa-instagram"></i> Instagram</a>
-        <a href="https://t.me/berkahperdana" target="_blank" class="social-btn"><i class="fab fa-telegram-plane"></i> Telegram</a>
-        <a href="https://www.tiktok.com/@berkahperdana" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i> TikTok</a>
-        <a href="https://wa.me/6738363366" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-      </div>
-
-      <div class="legal-box glass-card">
-        <div><a href="#" style="margin-right:1.5rem;">📄 Privacy</a><a href="#" style="margin-right:1.5rem;">📜 Terms</a><a href="#" style="margin-right:1.5rem;">⚠️ Disclaimer</a><a href="#">🍪 Cookies</a></div>
-        <div class="adsense-dummy">🟡 [Adsense Ready]</div>
-      </div>
-
-      <div class="contact-detail glass-card" style="display:flex; flex-wrap:wrap; gap:2rem; padding:2rem;">
-        <div><i class="fas fa-map-marker-alt"></i> Unit 17, Ground Floor, Bangunan Hajah Sinun Binti Simpul Dan Anak-Anak, Simpang 173, Lot 34738, EDR BD30457, Kampong Mulaut, BB4113, Brunei.</div>
-        <div><i class="fas fa-envelope"></i> official@berkahperdana.com</div>
-        <div><i class="fas fa-phone"></i> +6738363366</div>
+      <div class='comp2-badge-item'>
+        <svg fill='none' height='22' stroke='#c8a445' stroke-width='2' viewBox='0 0 24 24' width='22'><path d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z'/></svg>
+        <div><strong>CUSTOMER SUPPORT</strong><br/><span>24/7 Customer Service</span></div>
       </div>
     </div>
+
+    <!-- FOOTER BAWAH -->
+    <div class='comp2-footer'>
+      <a class='comp2-logo-area' href='/'>
+        <img alt='Berkah Perdana' src='https://server-enterprise.pages.dev/logo.webp'/>
+        <div class='comp2-logo-text'>
+          <span class='comp2-logo-name'>BERKAH PERDANA</span>
+          <span class='comp2-logo-badge'>ENTERPRISE</span>
+        </div>
+      </a>
+      <p class='comp2-footer-desc'>Your trusted home appliances store<br/>with quality products and<br/>excellent service.</p>
+    </div>
+
+</div>
+</div>  
+  
+  
+  
+  
+    
+  
+   <main class='main-area' id='main' role='main'>
+      
+    
+
+  
+  
+  
+  
+  
+  
+  
+  
+ <!-- SECTION 1: CATEGORIES -->
+  <div class='comp-section'>
+    <div class='comp-section-header'>
+      <h2>PRODUCT CATEGORIES</h2>
+      <a href='#'>View All Categories</a>
+    </div>
+    <div class='comp-cat-grid'>
+      <a class='comp-cat-item' href='#'><img alt='Aircond' src='https://placehold.co/100x100/f1f5f9/5d142b?text=AC'/><span>Aircond</span></a>
+      <a class='comp-cat-item' href='#'><img alt='Washer' src='https://placehold.co/100x100/f1f5f9/5d142b?text=Washer'/><span>Washer</span></a>
+      <a class='comp-cat-item' href='#'><img alt='Cooker' src='https://placehold.co/100x100/f1f5f9/5d142b?text=Cooker'/><span>Cooker</span></a>
+      <a class='comp-cat-item' href='#'><img alt='Iron' src='https://placehold.co/100x100/f1f5f9/5d142b?text=Iron'/><span>Iron</span></a>
+      <a class='comp-cat-item' href='#'><img alt='Sound' src='https://placehold.co/100x100/f1f5f9/5d142b?text=Sound'/><span>Sound</span></a>
+      <a class='comp-cat-item' href='#'><img alt='Refrigerator' src='https://placehold.co/100x100/f1f5f9/5d142b?text=Fridge'/><span>Refrigerator</span></a>
+      <a class='comp-cat-item' href='#'><img alt='Television' src='https://placehold.co/100x100/f1f5f9/5d142b?text=TV'/><span>Television</span></a>
+      <a class='comp-cat-item' href='#'><img alt='Fan' src='https://placehold.co/100x100/f1f5f9/5d142b?text=Fan'/><span>Fan</span></a>
+      <a class='comp-cat-item' href='#'><img alt='Vacuum' src='https://placehold.co/100x100/f1f5f9/5d142b?text=Vacuum'/><span>Vacuum Cleaner</span></a>
+      <a class='comp-cat-item' href='#'><img alt='Water Heater' src='https://placehold.co/100x100/f1f5f9/5d142b?text=Heater'/><span>Water Heater</span></a>
+    </div>
+  </div>
+
+  <!-- SECTION 2: PROMOTION CATEGORIES (DENGAN PANAH) -->
+  <div class='comp-section'>
+    <div class='comp-section-header'>
+      <h2>PROMOTION CATEGORIES</h2>
+      <a href='#'>View All Promotions</a>
+    </div>
+    <div class='comp-slider-wrap'>
+      <a class='comp-slider-arrow comp-slider-left' href='#'>&#8249;</a>
+      <a class='comp-slider-arrow comp-slider-right' href='#'>&#8250;</a>
+      <div class='comp-promo-grid'>
+        <div class='comp-promo-card'>
+          <span class='p-label'>AIRCOND</span>
+          <div class='p-disc'>DISCOUNT UP TO<br/><strong>30%</strong></div>
+          <div class='p-desc'>LIMITED TIME OFFER!</div>
+          <img alt='Aircond' class='p-img' src='https://placehold.co/120x120/transparent/fff?text=AC'/>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+        <div class='comp-promo-card'>
+          <span class='p-label'>WASHER</span>
+          <div class='p-disc'>DISCOUNT UP TO<br/><strong>25%</strong></div>
+          <div class='p-desc'>LIMITED TIME OFFER!</div>
+          <img alt='Washer' class='p-img' src='https://placehold.co/120x120/transparent/fff?text=Washer'/>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+        <div class='comp-promo-card'>
+          <span class='p-label'>COOKER</span>
+          <div class='p-disc'>DISCOUNT UP TO<br/><strong>20%</strong></div>
+          <div class='p-desc'>LIMITED TIME OFFER!</div>
+          <img alt='Cooker' class='p-img' src='https://placehold.co/120x120/transparent/fff?text=Cooker'/>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+        <div class='comp-promo-card'>
+          <span class='p-label'>IRON</span>
+          <div class='p-disc'>DISCOUNT UP TO<br/><strong>15%</strong></div>
+          <div class='p-desc'>LIMITED TIME OFFER!</div>
+          <img alt='Iron' class='p-img' src='https://placehold.co/120x120/transparent/fff?text=Iron'/>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: BUY CHEAP PRICES (DENGAN PANAH) -->
+  <div class='comp-section'>
+    <div class='comp-section-header'>
+      <h2>BUY CHEAP PRICES</h2>
+      <a href='#'>View All Deals</a>
+    </div>
+    <div class='comp-slider-wrap'>
+      <a class='comp-slider-arrow comp-slider-right' href='#'>&#8250;</a>
+      <div class='comp-prod-grid'>
+        <div class='comp-prod-card'>
+          <span class='badge-disc'>-30%</span>
+          <img alt='Product' src='https://placehold.co/200x150/f1f5f9/5d142b?text=Aircond'/>
+          <h4>Aircond 1.5HP Inverter</h4>
+          <div class='price'>BND384.30</div>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+        <div class='comp-prod-card'>
+          <span class='badge-disc'>-25%</span>
+          <img alt='Product' src='https://placehold.co/200x150/f1f5f9/5d142b?text=Washer'/>
+          <h4>Washer 8.5KG Front Load</h4>
+          <div class='price'>BND494.25</div>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+        <div class='comp-prod-card'>
+          <span class='badge-disc'>-20%</span>
+          <img alt='Product' src='https://placehold.co/200x150/f1f5f9/5d142b?text=Cooker'/>
+          <h4>Gas Cooker 4 Burner</h4>
+          <div class='price'>BND263.20</div>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+        <div class='comp-prod-card'>
+          <span class='badge-disc'>-15%</span>
+          <img alt='Product' src='https://placehold.co/200x150/f1f5f9/5d142b?text=Iron'/>
+          <h4>Steam Iron 2400W</h4>
+          <div class='price'>BND75.65</div>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: BEST SELLER (DENGAN PANAH) -->
+  <div class='comp-section'>
+    <div class='comp-section-header'>
+      <h2>BEST SELLER</h2>
+      <a href='#'>View All Best Seller</a>
+    </div>
+    <div class='comp-slider-wrap'>
+      <a class='comp-slider-arrow comp-slider-right' href='#'>&#8250;</a>
+      <div class='comp-prod-grid'>
+        <div class='comp-prod-card'>
+          <span class='badge-best'>BEST<br/>SELLER</span>
+          <img alt='Product' src='https://placehold.co/200x150/f1f5f9/5d142b?text=Aircond'/>
+          <h4>Aircond 1.5HP Inverter</h4>
+          <div class='stars'>&#9733;&#9733;&#9733;&#9733;&#9733; <span>(120)</span></div>
+          <div class='price'>BND384.30</div>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+        <div class='comp-prod-card'>
+          <span class='badge-best'>BEST<br/>SELLER</span>
+          <img alt='Product' src='https://placehold.co/200x150/f1f5f9/5d142b?text=Washer'/>
+          <h4>Washer 8.5KG Front Load</h4>
+          <div class='stars'>&#9733;&#9733;&#9733;&#9733;&#9733; <span>(98)</span></div>
+          <div class='price'>BND494.25</div>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+        <div class='comp-prod-card'>
+          <span class='badge-best'>BEST<br/>SELLER</span>
+          <img alt='Product' src='https://placehold.co/200x150/f1f5f9/5d142b?text=Cooker'/>
+          <h4>Cooker Hood 90cm</h4>
+          <div class='stars'>&#9733;&#9733;&#9733;&#9733;&#9733; <span>(85)</span></div>
+          <div class='price'>BND199.00</div>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+        <div class='comp-prod-card'>
+          <span class='badge-best'>BEST<br/>SELLER</span>
+          <img alt='Product' src='https://placehold.co/200x150/f1f5f9/5d142b?text=Sound'/>
+          <h4>Sound Bar 2.1ch</h4>
+          <div class='stars'>&#9733;&#9733;&#9733;&#9733;&#9733; <span>(76)</span></div>
+          <div class='price'>BND139.00</div>
+          <div class='p-btns'><a href='#'>Look Description</a><a href='#'>Order Now</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
   </main>
+  
+  
+  
+  
+  
+  
+  
+</div>
+</div>
+ 
+  
+  <footer/>
+ 
+  
+ 
+  
+  
+  
+  
+  
+  
+ 
+  
+<script>
+  
+  // ===== COMP2: HYBRID TOGGLE =====
+document.addEventListener(&#39;DOMContentLoaded&#39;, function() {
+  var trigger = document.getElementById(&#39;comp2-menu-trigger&#39;);
+  var overlay = document.getElementById(&#39;comp2-modal-overlay&#39;);
+  var closeBtn = document.getElementById(&#39;comp2-close-btn&#39;);
 
-  <footer><div class="container">© 2026 Berkah Perdana Enterprise. Anti-spam protected.</div></footer>
-  <a href="https://wa.me/6738363366" target="_blank" class="wa-float" title="Chat WhatsApp"><i class="fab fa-whatsapp"></i></a>
-  <div class="cursor-dot" id="cursorDot"></div>
+  if (!trigger || !overlay) return;
 
-  <script>
-    (function() {
-      // Loader
-      window.addEventListener('load', () => {
-        document.getElementById('loader').classList.add('hidden');
-        setTimeout(() => { const l = document.getElementById('loader'); if(l) l.remove(); }, 600);
-      });
+  function openModal() {
+    overlay.classList.add(&#39;active&#39;);
+    document.body.style.overflow = &#39;hidden&#39;;
+  }
+  function closeModal() {
+    overlay.classList.remove(&#39;active&#39;);
+    document.body.style.overflow = &#39;&#39;;
+  }
 
-      // Dark mode
-      const body = document.body;
-      const toggle = document.getElementById('darkToggle');
-      const icon = document.getElementById('modeIcon');
-      const text = document.getElementById('modeText');
-      function setMode(dark) {
-        body.classList.toggle('dark', dark); body.classList.toggle('light', !dark);
-        icon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
-        text.textContent = dark ? 'Light' : 'Dark';
-        localStorage.setItem('berkah-dark-mode', dark);
-      }
-      setMode(localStorage.getItem('berkah-dark-mode') === 'true');
-      toggle.addEventListener('click', () => setMode(!body.classList.contains('dark')));
+  trigger.addEventListener(&#39;click&#39;, function(e) {
+    e.preventDefault();
+    openModal();
+  });
 
-      // Typing effect
-      const words = ["Marketing", "Freelance", "Loker", "Jual Beli", "Server", "Sparepart", "Kelas Elit"];
-      let wI=0, cI=0, del=false;
-      const span = document.getElementById('typing-word');
-      function type() {
-        const cur = words[wI];
-        span.textContent = del ? cur.substring(0, cI-1) : cur.substring(0, cI+1);
-        if (!del) { cI++; if (cI===cur.length) { del=true; setTimeout(type,1200); return; } }
-        else { cI--; if (cI===0) { del=false; wI=(wI+1)%words.length; } }
-        setTimeout(type, del?50:100);
-      }
-      type();
+  if (closeBtn) {
+    closeBtn.addEventListener(&#39;click&#39;, function(e) {
+      e.preventDefault();
+      closeModal();
+    });
+  }
 
-      // Filter projek
-      const filterBtns = document.querySelectorAll('.filter-btn');
-      const projectItems = document.querySelectorAll('.project-item');
-      filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          filterBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          const filter = btn.dataset.filter;
-          projectItems.forEach(item => {
-            item.classList.toggle('hidden', filter !== 'all' && item.dataset.category !== filter);
-          });
-        });
-      });
-
-      // Intersection Observer untuk fade-in
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = 1; entry.target.style.transform = 'translateY(0)';
-          }
-        });
-      }, { threshold: 0.15 });
-      document.querySelectorAll('.section-bg, .glass-card, .grid-services .service-card, .project-item').forEach(el => {
-        el.style.opacity = 0; el.style.transform = 'translateY(20px)'; el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-      });
-
-      // Custom cursor
-      const cursor = document.getElementById('cursorDot');
-      document.addEventListener('mousemove', e => { cursor.style.left = e.clientX+'px'; cursor.style.top = e.clientY+'px'; });
-      document.addEventListener('mouseleave', () => cursor.style.opacity=0);
-      document.addEventListener('mouseenter', () => cursor.style.opacity=1);
-      // hide on touch
-      if('ontouchstart' in window) cursor.style.display='none';
-    })();
+  overlay.addEventListener(&#39;click&#39;, function(e) {
+    if (e.target === overlay) closeModal();
+  });
+});
+  
+  
+  
   </script>
+    
+    
+    
+    
+    
+    
+    
+    
+  
 </body>
 </html>
